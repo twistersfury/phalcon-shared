@@ -2,7 +2,6 @@
 namespace TwistersFury\Phalcon\Shared\Tests\Helpers;
 
 use org\bovigo\vfs\vfsStream;
-use Phalcon\Config;
 use Phalcon\Test\UnitTestCase;
 use TwistersFury\Phalcon\Shared\Helpers\PathManager;
 use TwistersFury\Shared\Tests\Data\Helpers\DummyPathManager;
@@ -28,6 +27,10 @@ class PathManagerTest extends UnitTestCase
             vfsStream::newDirectory('config')
         );
 
+        $rootFolder->addChild(
+            vfsStream::newDirectory('views')
+        );
+
 
         /** @var PathManager $pathManager */
         $pathManager = $this->getMockBuilder(PathManager::class)
@@ -40,7 +43,8 @@ class PathManagerTest extends UnitTestCase
                 'cache'   => $rootFolder->getChild('caching')->url(),
                 'root'    => $rootFolder->getChild('application')->url(),
                 'modules' => $rootFolder->getChild('module')->url(),
-                'config'  => $rootFolder->getChild('config')->url()
+                'config'  => $rootFolder->getChild('config')->url(),
+                'views'   => $rootFolder->getChild('views')->url()
             ]
         );
 

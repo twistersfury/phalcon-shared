@@ -20,15 +20,16 @@
         public function __construct($useDefaults = true)
         {
             if ($useDefaults) {
-                $this->setConfiguration();
+                $this->setConfiguration([]);
             }
         }
 
-        public function setConfiguration($configData = null)
+        public function setConfiguration($configData)
         {
-            if ($configData === null) {
-                $configData = $this->buildDefaults();
-            }
+            $configData = array_merge(
+                $this->buildDefaults(),
+                $configData
+            );
 
             foreach($configData as $keyName => $folderPath) {
                 if (!file_exists($folderPath)) {
@@ -48,6 +49,7 @@
                 'config'  => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'etc',
                 'modules' => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'modules',
                 'cache'   => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'cache',
+                'views'   => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'views'
             ];
         }
 
@@ -65,5 +67,10 @@
 
         public function getCacheDir() : string {
             return $this->configData['cache'];
+        }
+
+        public function getViewsDir() : string
+        {
+            return $this->configData['views'];
         }
     }
