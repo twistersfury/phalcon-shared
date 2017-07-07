@@ -51,7 +51,7 @@
 
                 return $isComposer ? __DIR__ . '/../../../app' : __DIR__ . '/..';
             })->define('TF_DEBUG_MODE', getenv('TF_DEBUG_MODE') ?: TF_DEBUG_MODE_DISABLED);
-        }, -1000);
+        }, -1000); //Setting Priority Low So This Runs Last
 
         $eventsManager->fire('twistersfury:static-defines', Di::getDefault()->get(Defines::class));
         $eventsManager->fire('twistersfury:dynamic-defines', Di::getDefault()->get(Defines::class));
