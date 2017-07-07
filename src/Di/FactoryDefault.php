@@ -25,6 +25,11 @@
      * @method PathManager getPathManager;
      */
 	class FactoryDefault extends AbstractFactory {
+	    protected $priorityServices = [
+            'registerPathManager', //Path Manager Is Needed For Config
+            'registerConfig'       //Config Is Needed For Everything
+        ];
+
         /**
          * Register Path Manager Helper Class
          */

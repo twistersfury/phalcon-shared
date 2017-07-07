@@ -22,10 +22,7 @@
         /**
          * @var array - Pre Defined Priority List
          */
-        protected $priorityServices = [
-            'registerPathManager', //Path Manager Is Needed For Config
-            'registerConfig'       //Config Is Needed For Everything
-        ];
+        protected $priorityServices = [];
 
         /**
          * FactoryDefault Constructor
