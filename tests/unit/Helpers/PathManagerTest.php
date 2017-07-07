@@ -56,20 +56,7 @@ class PathManagerTest extends UnitTestCase
      */
     public function testPathManagerThrowsException()
     {
-        $mockConfig = $this->getMockBuilder(Config::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['has'])
-            ->getMock();
-
-        $mockConfig->expects($this->once())
-            ->method('has')
-            ->with('directories')
-            ->willReturn(false);
-
-
-        $this->di->set('config', $mockConfig);
-
-        (new PathManager(false))->setConfiguration();
+        (new PathManager());
     }
 
     public function testPastManagerConstruct()

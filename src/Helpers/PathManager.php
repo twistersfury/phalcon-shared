@@ -43,17 +43,12 @@
 
         protected function buildDefaults()
         {
-            return array_merge(
-                [
-                    'root'    => TF_APP_ROOT,
-                    'config'  => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'etc',
-                    'modules' => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'modules',
-                    'cache'   => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'cache',
-                ],
-
-                $this->getDI()->get('config')->has('directories') ? $this->getDI()->get('config')
-                                                                         ->get('directories')->toArray() : []
-            );
+            return [
+                'root'    => TF_APP_ROOT,
+                'config'  => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'etc',
+                'modules' => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'modules',
+                'cache'   => TF_APP_ROOT . DIRECTORY_SEPARATOR . 'cache',
+            ];
         }
 
         public function getApplicationDir() : string {
