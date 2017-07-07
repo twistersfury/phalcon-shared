@@ -35,17 +35,6 @@ class AbstractFactoryTest extends UnitTestCase
 
         $reflectionProperty->setValue( $this->testSubject, [ 'registerDatabases' ] );
 
-        $reflectionMethod = new \ReflectionMethod( AbstractFactory::class, 'processServices' );
-        $reflectionMethod->setAccessible( TRUE );
-
-        $this->assertEquals( $this->testSubject, $reflectionMethod->invoke( $this->testSubject ) );
-    }
-
-    public function testConstruct()
-    {
-        require_once TF_SHARED_TESTS . '../../_data/Di/DummyFactory.php';
-
-        $this->testSubject = new DummyFactory();
-        $this->assertTrue($this->testSubject->has('someTest'));
+        $this->assertEquals( $this->testSubject, $this->testSubject->processServices() );
     }
 }

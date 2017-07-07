@@ -25,19 +25,10 @@
         protected $priorityServices = [];
 
         /**
-         * FactoryDefault Constructor
-         */
-        public function __construct() {
-            parent::__construct();
-
-            $this->processServices();
-        }
-
-        /**
          * Register All Services Prefixed With 'register'
          * @return AbstractFactory
          */
-        final protected function processServices() : AbstractFactory {
+        final public function processServices() : AbstractFactory {
             $classMethods = array_unique(
                 array_merge(
                     $this->priorityServices,
