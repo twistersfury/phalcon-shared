@@ -70,7 +70,7 @@ class FactoryDefaultTest extends UnitTestCase
 
         $mockUrl->expects($this->once())
             ->method('setBaseUri')
-            ->with('//www.example.com')
+            ->with('//www.example.com/')
             ->willReturnSelf();
 
         $this->testSubject->set(Url::class, $mockUrl);

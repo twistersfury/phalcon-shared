@@ -49,7 +49,7 @@
 		protected function registerUrl() : FactoryDefault {
 			$this->setShared('url', function() {
 				return $this->get(Url::class)
-					->setBaseUri('//' . $this->get('request')->getHttpHost());
+					->setBaseUri('//' . $this->get('request')->getHttpHost() . '/');
 			});
 
 			return $this;
