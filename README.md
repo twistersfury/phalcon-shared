@@ -10,6 +10,7 @@ This library is intended to exist as an enhancement to the already great Phalcon
 - URL Base Of Domain //domain.name.com
 - Config With Dist Logic
 - Registers Databases From Config
+- Registers Flash Session Using Bootstrap Classes
 - Registers Volt Engine Setting Compile Defaults Based Off Constants
 - Registers Crypt Using Key File From Config As Key
 
