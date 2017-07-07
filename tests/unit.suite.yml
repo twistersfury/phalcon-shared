@@ -1,0 +1,5 @@
+actor: Tester
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Unit
