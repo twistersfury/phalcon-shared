@@ -34,9 +34,11 @@
          * Register Path Manager Helper Class
          */
         protected function registerPathManager() : FactoryDefault {
-            $this->setShared('pathManager', function() {
-                return $this->get(PathManager::class);
-            });
+            if (!$this->has('pathManager')) {
+                $this->setShared( 'pathManager', function() {
+                    return $this->get( PathManager::class );
+                } );
+            }
 
             return $this;
         }
