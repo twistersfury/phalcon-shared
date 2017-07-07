@@ -76,22 +76,22 @@
          * Registers Databases From Configuration
          */
 		protected function registerDatabases() : FactoryDefault {
-		    /**
+            /**
              * @var  string $configName
              * @var  Config $dbConfig
              */
-            foreach($this->get('config')->get('databases') as $configName => $dbConfig) {
-				$this->set($configName, function() use ($dbConfig) {
-				    $adapterClass = $dbConfig->get('adapter') ?: Mysql::class;
+            foreach($this->get('config')->get('databases', []) as $configName => $dbConfig) {
+                $this->set($configName, function() use ($dbConfig) {
+                    $adapterClass = $dbConfig->get('adapter') ?: Mysql::class;
 
-				    return $this->get(
-				        $adapterClass,
+                    return $this->get(
+                        $adapterClass,
                         [
                             $dbConfig->toArray()
                         ]
                     );
-				});
-			}
+                });
+            }
 
 			return $this;
 		}
