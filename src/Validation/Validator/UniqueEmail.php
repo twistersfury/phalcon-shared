@@ -10,15 +10,14 @@
 
     use Phalcon\Validation;
     use Phalcon\Validation\Validator;
+    use TwistersFury\Phalcon\Shared\Interfaces\UserCriteriaInterface;
     use TwistersFury\Phalcon\Shared\Traits\Injectable;
 
     class UniqueEmail extends Validator {
         use Injectable;
 
         public function validate( Validation $validation, $attribute ) {
-            $userModel = $this->getDI()->get('criteriaFactory')
-                                       ->getUserByEmail($validation->getValue($attribute))
-                                       ->execute()->getFirst();
+            $userModel = $this->buildCriteria($validation, $attribute)->execute()->getFirst();
 
             if ($userModel) {
                 $userMessage = $this->getOption('message', 'E-Mail already exists.');
@@ -38,5 +37,15 @@
             }
 
             return true;
+        }
+
+        protected function buildCriteria(Validation $validation, $attribute)
+        {
+            $criteriaFactory = $this->getDI()->get('criteriaFactory');
+            if (!($criteriaFactory instanceof UserCriteriaInterface)) {
+                throw new \LogicException('Criteria Factory Must Implement UserCriteriaInterface');
+            }
+
+            return $criteriaFactory->getUserByEmail($validation->getValue($attribute));
         }
     }

@@ -8,6 +8,8 @@
 
     namespace TwistersFury\Phalcon\Shared\Interfaces;
 
+    use Phalcon\Mvc\Model\CriteriaInterface;
+
     interface UserCriteriaInterface {
-        public function getUserByEmail($emailAddress);
+        public function getUserByEmail($emailAddress) : CriteriaInterface;
     }
