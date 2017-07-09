@@ -6,7 +6,7 @@
      * Time: 10:18 PM
      */
 
-    namespace TwistersFury\Inventory\Shared\Validation\Validator;
+    namespace TwistersFury\Phalcon\Shared\Validation\Validator;
 
     use Phalcon\Validation;
     use Phalcon\Validation\Validator;
