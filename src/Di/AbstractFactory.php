@@ -44,20 +44,4 @@
 
             return $this;
         }
-
-        public function get($serviceName, $options = null) {
-            if ($this->has($serviceName)) {
-                return parent::get($serviceName, $options);
-            }
-
-            return static::getDefault()->get($serviceName, $options);
-        }
-
-        public function getShared($serviceName, $options = null) {
-            if ($this->has($serviceName)) {
-                return parent::getShared($serviceName, $options);
-            }
-
-            return static::getDefault()->getShared($serviceName, $options);
-        }
     }
