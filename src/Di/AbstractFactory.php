@@ -48,21 +48,16 @@
         public function get($serviceName, $options = null) {
             if ($this->has($serviceName)) {
                 return parent::get($serviceName, $options);
-            } else if (static::getDefault() !== $this) {
-
-                return static::getDefault()->get($serviceName, $options);
             }
 
-            throw new \RuntimeException('Service Not Defined: ' . $serviceName);
+            return static::getDefault()->get($serviceName, $options);
         }
 
         public function getShared($serviceName, $options = null) {
             if ($this->has($serviceName)) {
                 return parent::getShared($serviceName, $options);
-            } else if (static::getDefault() !== $this) {
-                return static::getDefault()->getShared($serviceName, $options);
             }
 
-            throw new \RuntimeException('Service Not Defined: ' . $serviceName);
+            return static::getDefault()->getShared($serviceName, $options);
         }
     }
