@@ -19,6 +19,12 @@
      */
     class CriteriaFactory extends AbstractFactory implements CriteriaFactoryInterface
     {
+        public function __construct() {
+            //Disabling Default Constructor
+            //TODO: This Shouldn't Have To Happen - Only Here Because AbstractFactory::processServices
+            //TODO: Not In \Phalcon\Di
+        }
+
         protected function registerCriteria()
         {
             $this->set(
@@ -34,26 +40,5 @@
             );
 
             return $this;
-        }
-
-        public function get($serviceName, $options = null) {
-            if ($this->has($serviceName)) {
-                return parent::get($serviceName, $options);
-            } else if (static::$_default !== $this) {
-
-                return static::$_default->get($serviceName, $options);
-            }
-
-            throw new \RuntimeException('Service Not Defined: ' . $serviceName);
-        }
-
-        public function getShared($serviceName, $options = null) {
-            if ($this->has($serviceName)) {
-                return parent::getShared($serviceName, $options);
-            } else if (static::$_default !== $this) {
-                return static::$_default->getShared($serviceName, $options);
-            }
-
-            throw new \RuntimeException('Service Not Defined: ' . $serviceName);
         }
     }
