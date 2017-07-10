@@ -8,7 +8,8 @@
 
     namespace TwistersFury\Phalcon\Shared\Di;
 
-    use \Phalcon\Mvc\Model\CriteriaInterface;
+    use Phalcon\Mvc\Model\CriteriaInterface;
+    use TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactoryInterface;
 
     /**
      * Class CriteriaFactory
@@ -16,7 +17,7 @@
      * @package TwistersFury\Phalcon\Shared\Di
      * @method CriteriaInterface getCriteria
      */
-    class CriteriaFactory extends AbstractFactory
+    class CriteriaFactory extends AbstractFactory implements CriteriaFactoryInterface
     {
         protected function registerCriteria()
         {

@@ -6,7 +6,7 @@
      * Time: 12:44 AM
      */
 
-    namespace TwistersFury\Phalcon\Authentication\Interfaces;
+    namespace TwistersFury\Phalcon\Shared\Interfaces;
 
     interface CriteriaFactoryInterface {
 
