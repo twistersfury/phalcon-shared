@@ -9,7 +9,6 @@
 	namespace TwistersFury\Phalcon\Shared\Di;
 
     use Monolog\Handler\NullHandler;
-    use Monolog\Handler\StreamHandler;
     use Phalcon\Config;
     use Phalcon\Config\Adapter\Grouped;
     use Phalcon\Crypt;
@@ -201,11 +200,8 @@
                 /** @var Monolog $logger */
                 $logger = $this->get(Monolog::class);
 
-                $logger->getLogger()->pushHandler($this->get(StreamHandler::class, [$this->get('pathManager')->getCachePath() . '/log']));
-
-                if ($this->get('config')->debugMode) {
-                    $logger->pushHandler($this->get(NullHandler::class));
-                }
+                //Adding The NullHandler As a Default 'Do Nothing'
+                $logger->getLogger()->pushHandler($this->get(NullHandler::class));
 
                 return $logger;
             });
