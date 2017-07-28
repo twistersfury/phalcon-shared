@@ -31,7 +31,7 @@
 
         public function __construct(Logger $monoLog = null) {
             if (!$monoLog) {
-                $monoLog = $this->getDi()->get(Logger::class);
+                $monoLog = $this->getDi()->get(Logger::class, ['global']);
             }
 
             $this->monoLogger = $monoLog;

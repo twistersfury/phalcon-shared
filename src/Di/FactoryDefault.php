@@ -199,7 +199,7 @@
         {
             $this->setShared('logger', function() {
                 /** @var Monolog $logger */
-                $logger = $this->get(Monolog::class, ['global']);
+                $logger = $this->get(Monolog::class);
 
                 $logger->getLogger()->pushHandler($this->get(StreamHandler::class, [$this->get('pathManager')->getCachePath() . '/log']));
 
