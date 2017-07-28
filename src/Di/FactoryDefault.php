@@ -16,6 +16,7 @@
     use Phalcon\Mvc\Url;
     use Phalcon\Mvc\View;
     use Phalcon\Mvc\View\Engine\Volt;
+    use Phalcon\Session\Adapter\Files;
     use TwistersFury\Phalcon\Shared\Helpers\PathManager;
 
     /**
@@ -38,6 +39,22 @@
                 $this->setShared( 'pathManager', function() {
                     return $this->get( PathManager::class );
                 } );
+            }
+
+            return $this;
+        }
+
+        protected function registerSession() : FactoryDefault {
+            if (!$this->has('session')) {
+                $this->setShared(
+                    'session',
+                    function() {
+                        $sessionAdapter = $this->get(Files::class);
+                        $sessionAdapter->start();
+
+                        return $sessionAdapter;
+                    }
+                );
             }
 
             return $this;

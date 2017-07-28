@@ -323,4 +323,9 @@ class FactoryDefaultTest extends UnitTestCase
 
         $this->testSubject->get('crypt');
     }
+
+    public function testSession()
+    {
+        $this->markTestIncomplete('Need To Implement Session Test');
+    }
 }

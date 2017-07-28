@@ -49,7 +49,7 @@
             )->define('TF_APP_ROOT', function() {
                 $isComposer = strstr(__DIR__, 'vendor') !== false;
 
-                return $isComposer ? __DIR__ . '/../../../app' : __DIR__ . '/..';
+                return $isComposer ? __DIR__ . '/../../../../app' : __DIR__ . '/..';
             })->define('TF_DEBUG_MODE', getenv('TF_DEBUG_MODE') ?: TF_DEBUG_MODE_DISABLED);
         }, -1000); //Setting Priority Low So This Runs Last
 
