@@ -8,6 +8,8 @@
 
 	namespace TwistersFury\Phalcon\Shared\Di;
 
+    use Monolog\Handler\NullHandler;
+    use Monolog\Handler\StreamHandler;
     use Phalcon\Config;
     use Phalcon\Config\Adapter\Grouped;
     use Phalcon\Crypt;
@@ -18,6 +20,7 @@
     use Phalcon\Mvc\View\Engine\Volt;
     use Phalcon\Session\Adapter\Files;
     use TwistersFury\Phalcon\Shared\Helpers\PathManager;
+    use TwistersFury\Phalcon\Shared\Logger\Adapter\Monolog;
 
     /**
      * Extension of Default Phalcon DIC. Class adds a few extra features to make the DIC easier to configure.
@@ -190,5 +193,23 @@
             });
 
 		    return $this;
+        }
+
+        protected function registerLogger()
+        {
+            $this->setShared('logger', function() {
+                /** @var Monolog $logger */
+                $logger = $this->get(Monolog::class, ['global']);
+
+                $logger->getLogger()->pushHandler($this->get(StreamHandler::class, [$this->get('pathManager')->getCachePath() . '/log']));
+
+                if ($this->get('config')->debugMode) {
+                    $logger->pushHandler($this->get(NullHandler::class));
+                }
+
+                return $logger;
+            });
+
+            return $this;
         }
 	}
