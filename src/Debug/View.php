@@ -33,7 +33,7 @@
             }
 
 
-            $this->di->get('logger')->debug(
+            $this->getDI()->get('logger')->debug(
                 'Engine Render',
                 [
                     'engines'  => $engineList,
