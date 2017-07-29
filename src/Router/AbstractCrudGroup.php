@@ -15,7 +15,7 @@
     {
         abstract public function getModule() : string;
         abstract public function getController() : string;
-        abstract public function convertEntity(int $entityId) : Model;
+        abstract public function convertEntity(int $entityId) : ?Model;
 
         public function initialize() {
             $this->setPrefix('/' . $this->getModule() . '/')
