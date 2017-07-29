@@ -9,6 +9,7 @@
     namespace TwistersFury\Phalcon\Shared\Debug;
 
     use Phalcon\Cache\BackendInterface;
+    use Phalcon\Di;
     use Phalcon\Mvc\View as phalconView;
 
     /**
@@ -45,5 +46,13 @@
 
             return parent::_engineRender($engines, $viewPath, $silence, $mustClean,
                                   $cache);
+        }
+
+        public function getDI() {
+            if (!parent::getDI()) {
+                $this->setDI(Di::getDefault());
+            }
+
+            return parent::getDI();
         }
     }
