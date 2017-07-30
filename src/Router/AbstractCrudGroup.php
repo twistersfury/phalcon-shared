@@ -54,7 +54,7 @@
                 ]
             )->setName($this->getModule() . '-delete')->convert('entity', [$this, 'convertEntity']);
 
-            $this->add(
+            $this->addPost(
                 'save',
                 [
                     'action' => 'save'
