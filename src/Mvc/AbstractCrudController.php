@@ -122,16 +122,9 @@
         public function getName() : string
         {
             if ($this->controllerName === null) {
-                $this->setName(array_reverse(explode('\\', get_called_class()))[0]);
+                $this->controllerName = array_reverse(explode('\\', get_called_class()))[0];
             }
 
             return $this->controllerName;
-        }
-
-        public function setName(string $controllerName) : AbstractCrudController
-        {
-            $this->controllerName = $controllerName;
-
-            return $this;
         }
     }
