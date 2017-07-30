@@ -10,6 +10,7 @@
 
     use Phalcon\Forms\Form;
     use Phalcon\Mvc\Controller;
+    use Phalcon\Mvc\Model\CriteriaInterface;
     use TwistersFury\Phalcon\Shared\Interfaces\EntityInterface;
 
     abstract class AbstractCrudController extends Controller
@@ -118,8 +119,15 @@
             );
         }
 
+        public function listAction()
+        {
+            $this->view->setVar('records', $this->buildCriteria()->execute());
+        }
+
         public function getName() : string
         {
             return $this->dispatcher->getControllerName();
         }
+
+        abstract protected function buildCriteria() : CriteriaInterface;
     }
