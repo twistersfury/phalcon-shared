@@ -100,6 +100,14 @@
                         ]
                     );
                 }
+
+                foreach($entityModel->getMessages() as $message) {
+                    $this->flashSession->error($message);
+                }
+            }
+
+            foreach($this->getForm()->getMessages() as $message) {
+                $this->flashSession->error($message);
             }
 
             return $this->response->redirect(
