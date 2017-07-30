@@ -16,6 +16,7 @@
     {
         protected $wasLoaded = false;
         private $currentForm = null;
+        private $controllerName = null;
 
         public function initialize()
         {
@@ -96,7 +97,7 @@
                     $this->flashSession->success('Record Updated Successfully');
                     return $this->response->redirect(
                         [
-                            'for' => $this->dispatcher->getModuleName() . '-list'
+                            'for' => $this->dispatcher->getModuleName() . '-' . $this->getName() . '-list'
                         ]
                     );
                 }
@@ -112,9 +113,25 @@
 
             return $this->response->redirect(
                 [
-                    'for' => $this->dispatcher->getModuleName() . '-update',
+                    'for' => $this->dispatcher->getModuleName() . '-' . $this->getName() . '-update',
                     'entity' => $this->getEntity() ? $this->getEntity()->getId() : 0
                 ]
             );
+        }
+
+        public function getName() : string
+        {
+            if ($this->controllerName === null) {
+                $this->setName(array_reverse(explode('\\', get_called_class()))[0]);
+            }
+
+            return $this->controllerName;
+        }
+
+        public function setName(string $controllerName) : AbstractCrudController
+        {
+            $this->controllerName = $controllerName;
+
+            return $this;
         }
     }

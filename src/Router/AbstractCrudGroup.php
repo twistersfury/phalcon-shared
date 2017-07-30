@@ -31,41 +31,41 @@
                 [
                     'action' => 'create'
                 ]
-            )->setName($this->getModule() . '-add');
+            )->setName($this->getModule() . '-' . $this->getController() . '-add');
 
             $this->add(
                 '{entity:\d+}',
                 [
                     'action' => 'retrieve'
                 ]
-            )->setName($this->getModule() . '-view')->convert('entity', [$this, 'convertEntity']);
+            )->setName($this->getModule() . '-' . $this->getController() . '-view')->convert('entity', [$this, 'convertEntity']);
 
             $this->add(
                 '{entity:\d+}/update',
                 [
                     'action' => 'update',
                 ]
-            )->setName($this->getModule() . '-update')->convert('entity', [$this, 'convertEntity']);
+            )->setName($this->getModule() . '-' . $this->getController() . '-update')->convert('entity', [$this, 'convertEntity']);
 
             $this->add(
                 '{entity:\d+}/delete',
                 [
                     'action' => 'delete'
                 ]
-            )->setName($this->getModule() . '-delete')->convert('entity', [$this, 'convertEntity']);
+            )->setName($this->getModule() . '-' . $this->getController() . '-delete')->convert('entity', [$this, 'convertEntity']);
 
             $this->addPost(
                 'save',
                 [
                     'action' => 'save'
                 ]
-            )->setName($this->getModule() . '-save')->convert('entity', [$this, 'convertEntity']);
+            )->setName($this->getModule() . '-' . $this->getController() . '-save')->convert('entity', [$this, 'convertEntity']);
 
             $this->add(
                 'list',
                 [
                     'action' => 'list'
                 ]
-            );
+            )->setName($this->getModule() . '-' . $this->getController() . '-list');
         }
     }
