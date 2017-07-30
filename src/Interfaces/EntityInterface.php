@@ -13,5 +13,5 @@
     interface EntityInterface extends phEntityInterface
     {
         public function getTitle() : string;
-        public function getId() : int;
+        public function getId() : ?int;
     }

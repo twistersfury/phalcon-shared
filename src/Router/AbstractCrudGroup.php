@@ -18,7 +18,7 @@
         abstract public function convertEntity(int $entityId) : ?Model;
 
         public function initialize() {
-            $this->setPrefix('/' . $this->getModule() . '/')
+            $this->setPrefix('/' . $this->getModule() . '/' . $this->getController() . '/')
                  ->setPaths(
                      [
                          'module'     => $this->getModule(),
