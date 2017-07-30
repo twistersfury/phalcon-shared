@@ -8,7 +8,8 @@
     "shared",
     "php",
     "utilities",
-    "helpers"
+    "helpers",
+    "crud"
   ],
   "authors": [
     {
