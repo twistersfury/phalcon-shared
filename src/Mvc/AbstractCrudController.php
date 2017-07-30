@@ -87,6 +87,7 @@
         public function deleteAction()
         {
             $this->getEntity()->delete();
+            $this->flashSession->success('The record has been removed.');
         }
 
         public function saveAction()
