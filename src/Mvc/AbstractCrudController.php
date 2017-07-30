@@ -16,7 +16,6 @@
     {
         protected $wasLoaded = false;
         private $currentForm = null;
-        private $controllerName = null;
 
         public function initialize()
         {
@@ -121,16 +120,6 @@
 
         public function getName() : string
         {
-            if ($this->controllerName === null) {
-                $this->controllerName = strtolower(
-                    str_replace(
-                        'Controller',
-                        '',
-                        array_reverse(explode('\\', get_called_class()))[0]
-                    )
-                );
-            }
-
-            return $this->controllerName;
+            return $this->dispatcher->getControllerName();
         }
     }
