@@ -18,7 +18,7 @@
                 $this->url->get(
                     [
                         'for' => $this->dispatcher->getModuleName() . '-' . $this->dispatcher->getControllerName() . '-save',
-                        'entity' => $this->getEntity()->getId()
+                        'entity' => $this->getEntity() ? $this->getEntity()->getId() : 0
                     ]
                 )
             );
