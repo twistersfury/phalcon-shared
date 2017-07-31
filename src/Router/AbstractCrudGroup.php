@@ -31,7 +31,7 @@
                 [
                     'action' => 'create'
                 ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-add');
+            )->setName($this->getModule() . '-' . $this->getController() . '-create');
 
             $this->add(
                 '{entity:\d+}',
