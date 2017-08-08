@@ -10,6 +10,7 @@
 
     use Phalcon\Mvc\Model;
     use Phalcon\Mvc\Router\Group;
+    use Phalcon\Mvc\RouterInterface;
 
     abstract class AbstractCrudGroup extends Group
     {
@@ -17,8 +18,29 @@
         abstract public function getController() : string;
         abstract public function convertEntity(int $entityId) : ?Model;
 
-        public function initialize() {
-            $this->setPrefix('/' . $this->getModule() . '/' . $this->getController() . '/')
+        public function convertParentEntity(int $parentId) : ?Model
+        {
+            return null;
+        }
+
+        public function hasParent() : bool
+        {
+            return false;
+        }
+
+        protected function buildPrefix() : string
+        {
+            $routePrefix = '/' . $this->getModule() . '/' . $this->getController() . '/';
+            if ($this->hasParent()) {
+                $routePrefix .= '{parentEntity:\d+}/';
+            }
+
+            return $routePrefix;
+        }
+
+        public function initialize()
+        {
+            $this->setPrefix($this->buildPrefix())
                  ->setPaths(
                      [
                          'module'     => $this->getModule(),
@@ -26,46 +48,68 @@
                      ]
                  );
 
-            $this->add(
-                'create',
-                [
-                    'action' => 'create'
-                ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-create');
+            $this->processRoute(
+                $this->add(
+                    'create',
+                    [
+                        'action' => 'create'
+                    ]
+                ),
+                'create'
+            )->processRoute(
+                $this->add(
+                    '{entity:\d+}',
+                    [
+                        'action' => 'retrieve'
+                    ]
+                )
+            )->processRoute(
+                $this->add(
+                    '{entity:\d+}/update',
+                    [
+                        'action' => 'update',
+                    ]
+                )
+            )->processRoute(
+                $this->add(
+                    '{entity:\d+}/delete',
+                    [
+                        'action' => 'delete'
+                    ]
+                )
+            )->processRoute(
+                $this->addPost(
+                    'save',
+                    [
+                        'action' => 'save'
+                    ]
+                )
+            )->processRoute(
+                $this->add(
+                    'list',
+                    [
+                        'action' => 'list'
+                    ]
+                )
+            );
+        }
 
-            $this->add(
-                '{entity:\d+}',
-                [
-                    'action' => 'retrieve'
-                ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-view')->convert('entity', [$this, 'convertEntity']);
+        /**
+         * @param \Phalcon\Mvc\RouterInterface|\Phalcon\Mvc\Router\Route $route
+         * @param string                       $routeType
+         *
+         * @return \TwistersFury\Phalcon\Shared\Router\AbstractCrudGroup
+         */
+        protected function processRoute(RouterInterface $route, string $routeType) : AbstractCrudGroup
+        {
+            $route->setName(
+                $this->getModule() . '-' . $this->getController() . '-' . $routeType
+            )->convert('entity', [$this, 'convertEntity']);
 
-            $this->add(
-                '{entity:\d+}/update',
-                [
-                    'action' => 'update',
-                ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-update')->convert('entity', [$this, 'convertEntity']);
+            if ($this->hasParent()) {
+                $route->convert('parentEntity', [$this, 'convertParentEntity']);
+            }
 
-            $this->add(
-                '{entity:\d+}/delete',
-                [
-                    'action' => 'delete'
-                ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-delete')->convert('entity', [$this, 'convertEntity']);
-
-            $this->addPost(
-                'save',
-                [
-                    'action' => 'save'
-                ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-save')->convert('entity', [$this, 'convertEntity']);
-
-            $this->add(
-                'list',
-                [
-                    'action' => 'list'
-                ]
-            )->setName($this->getModule() . '-' . $this->getController() . '-list');
+            return $this;
         }
     }
