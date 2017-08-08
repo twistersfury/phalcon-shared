@@ -73,35 +73,40 @@
                     [
                         'action' => 'retrieve'
                     ]
-                )
+                ),
+                'retrieve'
             )->processRoute(
                 $this->add(
                     '{entity:\d+}/update',
                     [
                         'action' => 'update',
                     ]
-                )
+                ),
+                'update'
             )->processRoute(
                 $this->add(
                     '{entity:\d+}/delete',
                     [
                         'action' => 'delete'
                     ]
-                )
+                ),
+                'delete'
             )->processRoute(
                 $this->addPost(
                     'save',
                     [
                         'action' => 'save'
                     ]
-                )
+                ),
+                'save'
             )->processRoute(
                 $this->add(
                     'list',
                     [
                         'action' => 'list'
                     ]
-                )
+                ),
+                'list'
             );
         }
 
