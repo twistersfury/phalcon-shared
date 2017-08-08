@@ -18,6 +18,10 @@
         abstract public function getController() : string;
         abstract public function convertEntity(int $entityId) : ?Model;
 
+        public function getParentController() : ?string {
+            return null;
+        }
+
         public function convertParentEntity(int $parentId) : ?Model
         {
             return null;
@@ -30,10 +34,17 @@
 
         protected function buildPrefix() : string
         {
-            $routePrefix = '/' . $this->getModule() . '/' . $this->getController() . '/';
+            $routePrefix = '/' . $this->getModule() . '/';
+
             if ($this->hasParent()) {
+                if ($this->getParentController()) {
+                    $routePrefix .= $this->getParentController() . '/';
+                }
+
                 $routePrefix .= '{parentEntity:\d+}/';
             }
+
+            $routePrefix .= $this->getController() . '/';
 
             return $routePrefix;
         }
