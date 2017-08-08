@@ -10,7 +10,7 @@
 
     use Phalcon\Mvc\Model;
     use Phalcon\Mvc\Router\Group;
-    use Phalcon\Mvc\RouterInterface;
+    use Phalcon\Mvc\Router\Route;
 
     abstract class AbstractCrudGroup extends Group
     {
@@ -111,7 +111,7 @@
          *
          * @return \TwistersFury\Phalcon\Shared\Router\AbstractCrudGroup
          */
-        protected function processRoute(RouterInterface $route, string $routeType) : AbstractCrudGroup
+        protected function processRoute(Route $route, string $routeType) : AbstractCrudGroup
         {
             $route->setName(
                 $this->getModule() . '-' . $this->getController() . '-' . $routeType
