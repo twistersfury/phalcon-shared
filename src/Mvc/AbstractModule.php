@@ -22,7 +22,7 @@
                                ->setDefaultNameSpace(
                                    str_replace(
                                        'Module',
-                                       'Controllers',
+                                       'Mvc\Controllers',
                                        get_called_class()
                                    )
                                );
