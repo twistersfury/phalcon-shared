@@ -66,6 +66,8 @@ class Config extends AbstractServiceProvider implements ServiceProviderInterface
 
             return $configList;
         });
+
+        return $this;
     }
 
     public function registerConfig() : self
