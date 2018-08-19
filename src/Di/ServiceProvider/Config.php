@@ -43,7 +43,9 @@ class Config extends AbstractServiceProvider implements ServiceProviderInterface
                     \RecursiveDirectoryIterator::SKIP_DOTS
                 )
             ) as $configFile) {
-                $configList[] = $configFile->getPathname();
+                if (substr($configFile->getBasename(), 0, 6) === 'config.') {
+                    $configList[] = $configFile->getPathname();
+                }
             }
 
             //Local Config
