@@ -8,6 +8,8 @@
 
     namespace TwistersFury\Phalcon\Shared\Interfaces;
 
-    interface CriteriaFactory {
+    use Phalcon\DiInterface;
+
+    interface CriteriaFactory extends DiInterface {
 
     }
