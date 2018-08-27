@@ -22,6 +22,8 @@
         ]
     )->register(true);
 
+    require_once __DIR__ . '/../shim.php';
+
 
     if (!Di::getDefault()) {
         Di::setDefault((new FactoryDefault()));

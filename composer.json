@@ -19,8 +19,7 @@
   ],
   "autoload" : {
     "files" : [
-      "src/phalcon_bootstrap.php",
-      "shim.php"
+      "src/phalcon_bootstrap.php"
     ]
   },
   "require" : {
