@@ -41,7 +41,8 @@ class Logging extends AbstractServiceProvider
                 [
                     \Swift_Mailer::newInstance(
                         \Swift_SmtpTransport::newInstance(
-                            $servicesConfig->mail->host
+                            $servicesConfig->mail->host,
+                            $servicesConfig->mail->port
                         )
                     ),
                     $exampleMessage,
