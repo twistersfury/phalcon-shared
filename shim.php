@@ -10,10 +10,10 @@
  * @class TwistersFury\Phalcon\Shared\Di\CriteriaFactory
  * @deprecated
  */
-class_alias(\TwistersFury\Phalcon\Shared\Model\Criteria\Factory::class, 'TwistersFury\Phalcon\Shared\Di\CriteriaFactory');
+class_alias('\TwistersFury\Phalcon\Shared\Model\Criteria\Factory', 'TwistersFury\Phalcon\Shared\Di\CriteriaFactory');
 
 /**
  * @class TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactoryInterface
  * @deprecated
  */
-class_alias(\TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactory::class, '\TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactoryInterface');
+class_alias('\TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactory', '\TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactoryInterface');
