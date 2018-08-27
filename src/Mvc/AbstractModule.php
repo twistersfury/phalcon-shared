@@ -1,30 +1,35 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: fenikkusu
-     * Date: 7/28/17
-     * Time: 12:36 AM
-     */
+/**
+ * Copyright (C) 2018 Twister's Fury.
+ * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+ */
 
-    namespace TwistersFury\Phalcon\Shared\Mvc;
+namespace TwistersFury\Phalcon\Shared\Mvc;
 
-    use Phalcon\Mvc\ModuleDefinitionInterface;
-    use Phalcon\DiInterface;
+use Phalcon\Mvc\ModuleDefinitionInterface;
+use Phalcon\DiInterface;
 
-    abstract class AbstractModule implements ModuleDefinitionInterface
+abstract class AbstractModule implements ModuleDefinitionInterface
+{
+    public function registerAutoloaders(DiInterface $dependencyInjector = null)
+    {}
+
+    public function registerServices(DiInterface $dependencyInjector)
     {
-        public function registerAutoloaders(DiInterface $dependencyInjector = null)
-        {}
-
-        public function registerServices(DiInterface $dependencyInjector)
-        {
-            $dependencyInjector->getShared('dispatcher')
-                               ->setDefaultNameSpace(
-                                   str_replace(
-                                       'Module',
-                                       'Mvc\Controllers',
-                                       get_called_class()
-                                   )
-                               );
-        }
+        $dependencyInjector->getShared('dispatcher')
+            ->setModuleName($this->getModuleName())
+            ->setDefaultNameSpace(
+                __NAMESPACE__ . '\\' . $this->getDefaultControllerNamespace()
+            );
     }
+
+    protected function getDefaultControllerNamespace(): string
+    {
+        return 'Controllers';
+    }
+
+    protected function getModuleName(): string
+    {
+        return explode('\\', get_called_class())[2];
+    }
+}
