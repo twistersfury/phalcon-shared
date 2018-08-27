@@ -16,11 +16,12 @@ abstract class AbstractModule implements ModuleDefinitionInterface
 
     public function registerServices(DiInterface $dependencyInjector)
     {
-        $dependencyInjector->getShared('dispatcher')
-            ->setModuleName($this->getModuleName())
-            ->setDefaultNameSpace(
-                __NAMESPACE__ . '\\' . $this->getDefaultControllerNamespace()
-            );
+        $dispatcher = $dependencyInjector->getShared('dispatcher');
+
+        $dispatcher->setModuleName($this->getModuleName());
+        $dispatcher->setDefaultNameSpace(
+            __NAMESPACE__ . '\\' . $this->getDefaultControllerNamespace()
+        );
     }
 
     protected function getDefaultControllerNamespace(): string
