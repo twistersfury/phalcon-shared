@@ -4,7 +4,7 @@
  * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
  */
 
-namespace TwistersFury\Phalcon\Shared\Model\Criteria;
+namespace TwistersFury\Phalcon\Shared\Mvc\Model\Criteria;
 
 use Phalcon\Di;
 use Phalcon\Mvc\Model\Criteria;
