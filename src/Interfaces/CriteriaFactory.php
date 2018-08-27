@@ -8,6 +8,6 @@
 
     namespace TwistersFury\Phalcon\Shared\Interfaces;
 
-    interface CriteriaFactoryInterface {
+    interface CriteriaFactory {
 
     }

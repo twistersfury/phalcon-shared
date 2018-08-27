@@ -1,15 +1,7 @@
 <?php
 /**
- * Copyright (C) 2009 - 2018 Charles Martin (DBA Twister's Fury) - All Rights Reserved
- *
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by Charles Martin <phoenix@twistersfury.com>, September 2009
- *
- * @author    Phoenix <phoenix@twistersfury.com>
- * @license   LICENSE.md
- * @copyright 2009 - 2018 Twister's Fury
+ * Copyright (C) 2018 Twister's Fury.
+ * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
  */
 
 namespace TwistersFury\Phalcon\Shared\Di\ServiceProvider;
