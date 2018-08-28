@@ -50,7 +50,13 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
                 ]
             );
 
-            foreach ($this->get('config')->routes as $route) {
+            $config = $this->get('config');
+
+            $router->setDefaultModule($this->config->system->defaultRoute->module ?? 'profile')
+                ->setDefaultController($this->config->system->defaultRoute->controller ?? 'dashboard')
+                ->setDefaultAction($this->config->system->defaultRoute->action ?? 'index');
+
+            foreach ($config->routes as $route) {
                 $router->mount($this->get($route));
             }
 
