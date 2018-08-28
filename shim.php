@@ -17,3 +17,9 @@ class_alias('\TwistersFury\Phalcon\Shared\Mvc\Model\Criteria\Factory', 'Twisters
  * @deprecated
  */
 class_alias('\TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactory', '\TwistersFury\Phalcon\Shared\Interfaces\CriteriaFactoryInterface');
+
+/**
+ * @class TwistersFury\Phalcon\Shared\Mvc\Router\AbstractCrudGroup
+ * @deprecated
+ */
+class_alias('\TwistersFury\Phalcon\Shared\Mvc\Router\AbstractCrudGroup', '\TwistersFury\Phalcon\Shared\Router\AbstractCrudGroup');

@@ -6,11 +6,12 @@
      * Time: 12:34 AM
      */
 
-    namespace TwistersFury\Phalcon\Shared\Router;
+    namespace TwistersFury\Phalcon\Shared\Mvc\Router;
 
     use Phalcon\Mvc\Model;
     use Phalcon\Mvc\Router\Group;
     use Phalcon\Mvc\Router\Route;
+    use Phalcon\Mvc\Router\RouteInterface;
 
     abstract class AbstractCrudGroup extends Group
     {
@@ -111,7 +112,7 @@
         }
 
         /**
-         * @param \Phalcon\Mvc\RouterInterface|\Phalcon\Mvc\Router\Route $route
+         * @param Route|\Phalcon\Mvc\Router\RouteInterface $route
          * @param string                       $routeType
          *
          * @return \TwistersFury\Phalcon\Shared\Router\AbstractCrudGroup
