@@ -6,6 +6,7 @@
 
 namespace TwistersFury\Phalcon\Shared\Di\ServiceProvider;
 
+use Phalcon\Assets\Manager;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\DiInterface;
 use Phalcon\Flash\Session;
@@ -26,7 +27,8 @@ use TwistersFury\Phalcon\Shared\Mvc\View\Debug;
  */
 class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
 {
-    public function registerOverrides() : self
+
+    public function registerOverrides(): self
     {
         if ($this->get('config')->debug) {
             $this->set(View::class, Debug::class);
@@ -35,26 +37,22 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
         return $this;
     }
 
-    public function registerRouter() : self
+    public function registerRouter(): self
     {
         $this->set('router', function () {
             /** @var Router $router */
             $router = $this->get(Router::class, [false]);
 
             $router->removeExtraSlashes(true);
-            $router->notFound(
-                [
+            $router->notFound([
                     'module'     => 'support',
                     'controller' => 'system',
                     'action'     => 'noRoute'
-                ]
-            );
+                ]);
 
             $config = $this->get('config');
 
-            $router->setDefaultModule($this->config->system->defaultRoute->module ?? 'profile')
-                ->setDefaultController($this->config->system->defaultRoute->controller ?? 'dashboard')
-                ->setDefaultAction($this->config->system->defaultRoute->action ?? 'index');
+            $router->setDefaultModule($this->config->system->defaultRoute->module ?? 'profile')->setDefaultController($this->config->system->defaultRoute->controller ?? 'dashboard')->setDefaultAction($this->config->system->defaultRoute->action ?? 'index');
 
             foreach ($config->routes as $route) {
                 $router->mount($this->get($route));
@@ -66,7 +64,7 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
         return $this;
     }
 
-    protected function registerView() : self
+    protected function registerView(): self
     {
         $this->set('view', function () {
             /** @var View $view */
@@ -87,10 +85,7 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
                 $viewDirs[] = '/default';
             }
 
-            $view->setBasePath(APPLICATION_PATH . '/themes')
-                ->setLayoutsDir('layouts/')
-                ->setPartialsDir('partials/')
-                ->setViewsDir($viewDirs);
+            $view->setBasePath(APPLICATION_PATH . '/themes')->setLayoutsDir('layouts/')->setPartialsDir('partials/')->setViewsDir($viewDirs);
 
             $view->registerEngines([
                 '.volt' => 'voltEngine'
@@ -102,15 +97,13 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
         return $this;
     }
 
-    protected function registerUrl() : self
+    protected function registerUrl(): self
     {
         $this->set('url', function () {
             /** @var Url $url */
             $url = $this->get(Url::class);
 
-            $url->setBasePath($this->get('request')->getServer('DOCUMENT_ROOT'))
-                ->setBaseUri('//' . $this->get('request')->getServer('HTTP_HOST') . '/')
-                ->setStaticBaseUri('//' . $this->get('request')->getServer('HTTP_HOST') . '/');
+            $url->setBasePath($this->get('request')->getServer('DOCUMENT_ROOT'))->setBaseUri('//' . $this->get('request')->getServer('HTTP_HOST') . '/')->setStaticBaseUri('//' . $this->get('request')->getServer('HTTP_HOST') . '/');
 
             return $url;
         });
@@ -118,28 +111,25 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
         return $this;
     }
 
-    protected function registerVoltEngine() : self
+    protected function registerVoltEngine(): self
     {
-        $this->set(
-            'voltEngine',
-            function (View $view, DiInterface $di) {
-                /** @var Volt $volt */
-                $volt = $this->get(Volt::class, [$view, $di]);
+        $this->set('voltEngine', function (View $view, DiInterface $di) {
+            /** @var Volt $volt */
+            $volt = $this->get(Volt::class, [$view, $di]);
 
-                $volt->setOptions([
-                    'compileAlways'     => $this->get('config')->debug !== false,
-                    'compiledPath'      => $this->get('config')->application->cacheDir . '/',
-                    'compiledSeparator' => '.'
-                ]);
+            $volt->setOptions([
+                'compileAlways'     => $this->get('config')->debug !== false,
+                'compiledPath'      => $this->get('config')->application->cacheDir . '/',
+                'compiledSeparator' => '.'
+            ]);
 
-                return $volt;
-            }
-        );
+            return $volt;
+        });
 
         return $this;
     }
 
-    protected function registerFlashSession() : self
+    protected function registerFlashSession(): self
     {
         $this->set('flashSession', function () {
             return new Session([
@@ -153,7 +143,7 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
         return $this;
     }
 
-    protected function registerSession() : self
+    protected function registerSession(): self
     {
         $this->setShared('session', function () {
             /** @var Files $session */
@@ -166,7 +156,7 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
         return $this;
     }
 
-    protected function registerTranslate() : self
+    protected function registerTranslate(): self
     {
         $this->setShared('translate', function () {
             $language = $this->get('request')->getBestLanguage();
@@ -176,38 +166,54 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
                 $filePath = APPLICATION_PATH . '/locale/en.php';
             }
 
-            return $this->get(
-                NativeArray::class,
-                [
+            return $this->get(NativeArray::class, [
                     [
                         'content' => include $filePath
                     ]
-                ]
-            );
+                ]);
         });
 
         return $this;
     }
 
-    protected function registerDispatcher()
+    protected function registerDispatcher(): self
+    {
+        $this->setShared('dispatcher', function () {
+            /** @var Dispatcher $dispatcher */
+            $dispatcher = $this->get(Dispatcher::class);
+
+            $dispatcher->setEventsManager($this->get('eventsManager'));
+
+            foreach ($this->get('config')->middleware ?? [] as $middleWare) {
+                $dispatcher->getEventsManager()->attach('dispatch', $this->get($middleWare));
+            }
+
+            return $dispatcher;
+        });
+
+        return $this;
+    }
+
+    protected function registerAssets(): self
     {
         $this->setShared(
-            'dispatcher',
+            'assets',
             function () {
-                /** @var Dispatcher $dispatcher */
-                $dispatcher = $this->get(Dispatcher::class);
+                /** @var Manager $assets */
+                $assets = $this->get(Manager::class);
 
-                $dispatcher->setEventsManager($this->get('eventsManager'));
+                if (($themeName = $this->get('config')->system->theme)) {
+                    $assets->collection($themeName . '-externa;')
+                        ->setLocal(false);
 
-                foreach ($this->get('config')->middleware ?? [] as $middleWare) {
-                    $dispatcher->getEventsManager()->attach(
-                        'dispatch',
-                        $this->get($middleWare)
-                    );
+                    $assets->collection($themeName . '-internal')
+                        ->setLocal(true);
                 }
 
-                return $dispatcher;
+                return $assets;
             }
         );
+
+        return $this;
     }
 }
