@@ -18,19 +18,20 @@ abstract class AbstractModule implements ModuleDefinitionInterface
     {
         $dispatcher = $dependencyInjector->getShared('dispatcher');
 
-        $dispatcher->setModuleName($this->getModuleName());
+        $className = explode('\\', get_called_class());
+
+        $dispatcher->setModuleName($className[2]);
         $dispatcher->setDefaultNameSpace(
-            __NAMESPACE__ . '\\' . $this->getDefaultControllerNamespace()
+            str_replace(
+                'Module',
+                $this->getDefaultControllerNamespace(),
+                get_called_class()
+            )
         );
     }
 
     protected function getDefaultControllerNamespace(): string
     {
         return 'Controllers';
-    }
-
-    protected function getModuleName(): string
-    {
-        return explode('\\', get_called_class())[2];
     }
 }
