@@ -127,7 +127,7 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
                 $volt = $this->get(Volt::class, [$view, $di]);
 
                 $volt->setOptions([
-                    'compileAlways'     => $this->get('config')->debug,
+                    'compileAlways'     => $this->get('config')->debug !== false,
                     'compiledPath'      => $this->get('config')->application->cacheDir . '/',
                     'compiledSeparator' => '.'
                 ]);
