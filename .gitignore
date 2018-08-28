@@ -5,3 +5,4 @@ typings/
 vendor/
 htdocs/assets/
 .idea/
+tests/_output/
