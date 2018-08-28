@@ -11,13 +11,31 @@
     use Phalcon\Mvc\Model;
     use Phalcon\Mvc\Router\Group;
     use Phalcon\Mvc\Router\Route;
-    use Phalcon\Mvc\Router\RouteInterface;
+    use Phalcon\Text;
 
     abstract class AbstractCrudGroup extends Group
     {
-        abstract public function getModule() : string;
-        abstract public function getController() : string;
         abstract public function convertEntity(int $entityId) : ?Model;
+
+        public function getModule(): string
+        {
+            return $this->explodeClass()[2];
+        }
+
+        protected function explodeClass(): array
+        {
+            return explode('\\', get_called_class());
+        }
+
+        /**
+         * @return string
+         * @throws \ReflectionException
+         */
+        public function getController(): string
+        {
+            $reflectionClass = new \ReflectionClass(get_called_class());
+            return Text::uncamelize(str_replace('Controller', '', $reflectionClass->getShortName()));
+        }
 
         public function getParentController() : ?string {
             return null;
