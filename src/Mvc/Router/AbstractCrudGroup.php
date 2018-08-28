@@ -9,12 +9,16 @@
     namespace TwistersFury\Phalcon\Shared\Mvc\Router;
 
     use Phalcon\Mvc\Model;
+    use Phalcon\Mvc\Model\CriteriaInterface;
     use Phalcon\Mvc\Router\Group;
     use Phalcon\Mvc\Router\Route;
     use Phalcon\Text;
+    use TwistersFury\Phalcon\Shared\Traits\Injectable;
 
     abstract class AbstractCrudGroup extends Group
     {
+        use Injectable;
+
         abstract public function convertEntity(int $entityId) : ?Model;
 
         public function getModule(): string
@@ -25,6 +29,11 @@
         protected function explodeClass(): array
         {
             return explode('\\', get_called_class());
+        }
+
+        protected function buildCriteria(string $serviceName): CriteriaInterface
+        {
+            return $this->getDI()->get('criteriaFactory')->get($serviceName);
         }
 
         /**
