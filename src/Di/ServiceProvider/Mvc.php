@@ -203,7 +203,7 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
                 $assets = $this->get(Manager::class);
 
                 if (($themeName = $this->get('config')->system->theme)) {
-                    $assets->collection($themeName . '-externa;')
+                    $assets->collection($themeName . '-external')
                         ->setLocal(false);
 
                     $assets->collection($themeName . '-internal')
