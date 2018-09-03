@@ -62,7 +62,7 @@
 
         protected function buildPrefix() : string
         {
-            $routePrefix = '/' . $this->getModule() . '/';
+            $routePrefix = '/' . $this->prepareSegment($this->getModule()) . '/';
 
             if ($this->hasParent()) {
                 if ($this->getParentController()) {
@@ -72,7 +72,7 @@
                 $routePrefix .= '{parentEntity:\d+}/';
             }
 
-            $routePrefix .= $this->getController() . '/';
+            $routePrefix .= $this->prepareSegment($this->getController()) . '/';
 
             return $routePrefix;
         }
@@ -155,5 +155,10 @@
             }
 
             return $this;
+        }
+
+        protected function prepareSegment(string $routeSegment): string
+        {
+            return str_replace('_', '-', Text::uncamelize($routeSegment));
         }
     }
