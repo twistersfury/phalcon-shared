@@ -125,6 +125,15 @@
             $this->view->setVar('records', $this->buildCriteria()->execute());
         }
 
+        public function indexAction()
+        {
+            return $this->dispatcher->forward(
+                [
+                    'action' => 'list'
+                ]
+            );
+        }
+
         public function getName() : string
         {
             return $this->dispatcher->getControllerName();
