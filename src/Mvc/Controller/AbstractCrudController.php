@@ -55,7 +55,7 @@
             $entityClass = str_replace('Mvc\Controller', 'Forms', get_called_class());
 
             return preg_replace(
-                '#Forms$#',
+                '#Controller$#',
                 '',
                 $entityClass
             );
