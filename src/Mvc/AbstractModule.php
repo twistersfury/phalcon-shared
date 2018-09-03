@@ -8,6 +8,7 @@ namespace TwistersFury\Phalcon\Shared\Mvc;
 
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\DiInterface;
+use Phalcon\Text;
 
 abstract class AbstractModule implements ModuleDefinitionInterface
 {
@@ -20,7 +21,7 @@ abstract class AbstractModule implements ModuleDefinitionInterface
 
         $className = explode('\\', get_called_class());
 
-        $dispatcher->setModuleName($className[2]);
+        $dispatcher->setModuleName(str_replace('_', '-', Text::uncamelize($className[2])));
         $dispatcher->setDefaultNameSpace(
             str_replace(
                 'Module',
