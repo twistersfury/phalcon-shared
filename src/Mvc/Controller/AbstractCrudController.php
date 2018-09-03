@@ -52,7 +52,13 @@
 
         protected function getFormClass()
         {
-            return str_replace(['Controllers', 'Controller'], ['Forms', ''], get_called_class());
+            $entityClass = str_replace('Controller', 'Form', get_called_class());
+
+            return preg_replace(
+                'Form$',
+                '',
+                $entityClass
+            );
         }
 
         protected function getForm() : Form
