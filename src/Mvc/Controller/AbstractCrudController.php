@@ -6,7 +6,7 @@
      * Time: 12:42 AM
      */
 
-    namespace TwistersFury\Phalcon\Shared\Mvc;
+    namespace TwistersFury\Phalcon\Shared\Mvc\Controller;
 
     use Phalcon\Forms\Form;
     use Phalcon\Mvc\Controller;
