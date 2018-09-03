@@ -52,10 +52,10 @@
 
         protected function getFormClass()
         {
-            $entityClass = str_replace('Controller', 'Form', get_called_class());
+            $entityClass = str_replace('Mvc\Controller', 'Forms', get_called_class());
 
             return preg_replace(
-                '#Form$#',
+                '#Forms$#',
                 '',
                 $entityClass
             );
