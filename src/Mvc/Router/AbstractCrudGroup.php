@@ -43,7 +43,7 @@
         public function getController(): string
         {
             $reflectionClass = new \ReflectionClass(get_called_class());
-            return Text::uncamelize(str_replace('Controller', '', $reflectionClass->getShortName()));
+            return Text::uncamelize(str_replace('Group', '', $reflectionClass->getShortName()));
         }
 
         public function getParentController() : ?string {
