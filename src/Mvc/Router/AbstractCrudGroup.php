@@ -13,6 +13,7 @@
     use Phalcon\Mvc\Router\Group;
     use Phalcon\Mvc\Router\Route;
     use Phalcon\Text;
+    use ReflectionClass;
     use TwistersFury\Phalcon\Shared\Traits\Injectable;
 
     abstract class AbstractCrudGroup extends Group
@@ -23,7 +24,9 @@
 
         public function getModule(): string
         {
-            return $this->explodeClass()[2];
+            return $this->prepareSegment(
+                $this->explodeClass()[2]
+            );
         }
 
         protected function explodeClass(): array
@@ -42,8 +45,13 @@
          */
         public function getController(): string
         {
-            $reflectionClass = new \ReflectionClass(get_called_class());
-            return Text::uncamelize(str_replace('Group', '', $reflectionClass->getShortName()));
+            return $this->prepareSegment(
+                str_replace(
+                    'Group',
+                    '',
+                    (new ReflectionClass(get_called_class()))->getShortName()
+                )
+            );
         }
 
         public function getParentController() : ?string {
@@ -62,7 +70,7 @@
 
         protected function buildPrefix() : string
         {
-            $routePrefix = '/' . $this->prepareSegment($this->getModule()) . '/';
+            $routePrefix = '/' . $this->getModule() . '/';
 
             if ($this->hasParent()) {
                 if ($this->getParentController()) {
@@ -72,7 +80,7 @@
                 $routePrefix .= '{parentEntity:\d+}/';
             }
 
-            $routePrefix .= $this->prepareSegment($this->getController()) . '/';
+            $routePrefix .= $this->getController() . '/';
 
             return $routePrefix;
         }
@@ -86,6 +94,16 @@
                          'controller' => $this->getController()
                      ]
                  );
+
+            $this->processRoute(
+                $this->addGet(
+                    '',
+                    [
+                        'action' => 'index'
+                    ]
+                ),
+                'index'
+            );
 
             $this->processRoute(
                 $this->add(
