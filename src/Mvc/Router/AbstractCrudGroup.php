@@ -80,7 +80,7 @@
                 $routePrefix .= '{parentEntity:\d+}/';
             }
 
-            $routePrefix .= $this->getController() . '/';
+            $routePrefix .= $this->getController();
 
             return $routePrefix;
         }
@@ -107,7 +107,7 @@
 
             $this->processRoute(
                 $this->add(
-                    'create',
+                    '/create',
                     [
                         'action' => 'create'
                     ]
@@ -115,7 +115,7 @@
                 'create'
             )->processRoute(
                 $this->add(
-                    '{entity:\d+}',
+                    '/{entity:\d+}',
                     [
                         'action' => 'retrieve'
                     ]
@@ -123,7 +123,7 @@
                 'retrieve'
             )->processRoute(
                 $this->add(
-                    '{entity:\d+}/update',
+                    '/{entity:\d+}/update',
                     [
                         'action' => 'update',
                     ]
@@ -131,7 +131,7 @@
                 'update'
             )->processRoute(
                 $this->add(
-                    '{entity:\d+}/delete',
+                    '/{entity:\d+}/delete',
                     [
                         'action' => 'delete'
                     ]
@@ -139,7 +139,7 @@
                 'delete'
             )->processRoute(
                 $this->addPost(
-                    'save',
+                    '/save',
                     [
                         'action' => 'save'
                     ]
@@ -147,7 +147,7 @@
                 'save'
             )->processRoute(
                 $this->add(
-                    'list',
+                    '/list',
                     [
                         'action' => 'list'
                     ]
