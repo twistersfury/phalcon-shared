@@ -28,7 +28,7 @@ class Database extends AbstractServiceProvider
         $config = $this->get('config');
 
         //Register Primary Config
-        if ($config->has('database')) {
+        if ($config->get('database')) {
             $this->registerDatabase(
                 'db',
                 $config->database
