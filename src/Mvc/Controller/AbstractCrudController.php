@@ -1,10 +1,8 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: fenikkusu
-     * Date: 7/28/17
-     * Time: 12:42 AM
-     */
+/**
+ * Copyright (C) 2018 Twister's Fury.
+ * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+ */
 
     namespace TwistersFury\Phalcon\Shared\Mvc\Controller;
 
@@ -13,7 +11,7 @@
     use Phalcon\Mvc\Model\CriteriaInterface;
     use TwistersFury\Phalcon\Shared\Interfaces\EntityInterface;
 
-    abstract class AbstractCrudController extends Controller
+    abstract class AbstractCrudController extends AbstractController
     {
         protected $wasLoaded = false;
         private $currentForm = null;

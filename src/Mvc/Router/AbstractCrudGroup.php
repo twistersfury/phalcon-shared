@@ -1,10 +1,8 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: fenikkusu
-     * Date: 7/28/17
-     * Time: 12:34 AM
-     */
+/**
+ * Copyright (C) 2018 Twister's Fury.
+ * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+ */
 
     namespace TwistersFury\Phalcon\Shared\Mvc\Router;
 
