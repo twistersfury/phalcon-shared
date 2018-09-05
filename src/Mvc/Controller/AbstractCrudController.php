@@ -18,6 +18,8 @@
 
         public function initialize()
         {
+            parent::initialize();
+
             //Adding Current Entity To All Actions (Will Be Null In Cases Where Not Specified)
             $this->view->setVars(
                 [
