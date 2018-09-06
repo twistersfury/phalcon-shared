@@ -13,12 +13,36 @@
     use Phalcon\Text;
     use ReflectionClass;
     use TwistersFury\Phalcon\Shared\Traits\Injectable;
+    use TwistersFury\Phalcon\Shared\Exceptions\RecordNotFound;
 
     abstract class AbstractCrudGroup extends Group
     {
         use Injectable;
 
-        abstract public function convertEntity(int $entityId) : ?Model;
+        abstract protected function getDefaultEntityType(): string;
+
+        public function convertEntity(int $entityId, string $entityType = null): ?Model
+        {
+            if ($entityId === 0) {
+                return null;
+            } elseif ($entityType === null) {
+                $entityType = $this->getDefaultEntityType();
+            }
+
+            /** @var Model $entity */
+            $entity = $this->buildCriteria($entityType)->andWhere(
+                'id = :entityId:',
+                [
+                    'entityId' => $entityId
+                ]
+            )->execute()->getFirst();
+
+            if (!$entity) {
+                throw new RecordNotFound();
+            }
+
+            return $entity;
+        }
 
         public function getModule(): string
         {
