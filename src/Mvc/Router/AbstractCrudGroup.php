@@ -125,9 +125,7 @@
                     ]
                 ),
                 'index'
-            );
-
-            $this->processRoute(
+            )->processRoute(
                 $this->add(
                     '/create',
                     [
@@ -161,7 +159,7 @@
                 'delete'
             )->processRoute(
                 $this->addPost(
-                    '/save',
+                    '/{entity:\d+}/save',
                     [
                         'action' => 'save'
                     ]
