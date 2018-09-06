@@ -100,7 +100,7 @@
         {
             if ($this->getForm()->isValid($this->request->getPost())) {
                 $entityModel = $this->getEntity() ?: $this->createEntity();
-                if ($entityModel->save($this->request->getPost())) {
+                if ($entityModel->save($this->prepareEntityData($this->request->getPost()))) {
                     $this->flashSession->success('Record Updated Successfully');
                     return $this->response->redirect(
                         [
@@ -124,6 +124,11 @@
                     'entity' => $this->getEntity() ? $this->getEntity()->getId() : 0
                 ]
             );
+        }
+
+        protected function prepareEntityData(array $entityData): array
+        {
+            return $entityData;
         }
 
         public function listAction()
