@@ -123,6 +123,12 @@ class Mvc extends AbstractServiceProvider implements ServiceProviderInterface
                 'compiledSeparator' => '.'
             ]);
 
+            $compiler = $volt->getCompiler();
+
+            foreach (get_defined_functions()["internal"] as $definedFunction) {
+                $compiler->addFunction($definedFunction, $definedFunction);
+            }
+
             return $volt;
         });
 
