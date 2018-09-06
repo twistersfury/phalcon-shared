@@ -21,7 +21,7 @@
 
         abstract protected function getDefaultEntityType(): string;
 
-        public function convertEntity(int $entityId, string $entityType = null): ?Model
+        public function convertEntity(int $entityId, string $entityType = null, array $entityParams = null): ?Model
         {
             if ($entityId === 0) {
                 return null;
@@ -30,7 +30,7 @@
             }
 
             /** @var Model $entity */
-            $entity = $this->buildCriteria($entityType)->andWhere(
+            $entity = $this->buildCriteria($entityType, $entityParams)->andWhere(
                 'id = :entityId:',
                 [
                     'entityId' => $entityId
