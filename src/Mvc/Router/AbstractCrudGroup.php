@@ -21,12 +21,23 @@
 
         abstract protected function getDefaultEntityType(): string;
 
+        protected function getDefaultEntityParams(): array
+        {
+            return [];
+        }
+
         public function convertEntity(int $entityId, string $entityType = null, array $entityParams = null): ?Model
         {
             if ($entityId === 0) {
                 return null;
-            } elseif ($entityType === null) {
+            }
+
+            if ($entityType === null) {
                 $entityType = $this->getDefaultEntityType();
+            }
+
+            if ($entityParams === null) {
+                $entityParams = $this->getDefaultEntityParams();
             }
 
             /** @var Model $entity */
@@ -56,9 +67,9 @@
             return explode('\\', get_called_class());
         }
 
-        protected function buildCriteria(string $serviceName): CriteriaInterface
+        protected function buildCriteria(string $serviceName, array $serviceParams = null): CriteriaInterface
         {
-            return $this->getDI()->get('criteriaFactory')->get($serviceName);
+            return $this->getDI()->get('criteriaFactory')->get($serviceName, $serviceParams);
         }
 
         /**
