@@ -9,6 +9,7 @@
     namespace TwistersFury\Phalcon\Shared\Forms;
 
     use Phalcon\Forms\Form;
+    use Phalcon\Mvc\Model\CriteriaInterface;
 
     abstract class AbstractCrudForm extends Form
     {
@@ -22,5 +23,10 @@
                     ]
                 )
             );
+        }
+
+        protected function buildCriteria(string $serviceName): CriteriaInterface
+        {
+            return $this->getDI()->get('criteriaFactory')->get($serviceName);
         }
     }
