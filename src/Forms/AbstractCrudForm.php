@@ -25,8 +25,8 @@
             );
         }
 
-        protected function buildCriteria(string $serviceName): CriteriaInterface
+        protected function buildCriteria(string $serviceName, array $serviceParams = null): CriteriaInterface
         {
-            return $this->getDI()->get('criteriaFactory')->get($serviceName);
+            return $this->getDI()->get('criteriaFactory')->get($serviceName, $serviceParams);
         }
     }
