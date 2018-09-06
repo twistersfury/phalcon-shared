@@ -94,6 +94,12 @@
         {
             $this->getEntity()->delete();
             $this->flashSession->success('The record has been removed.');
+
+            return $this->response->redirect(
+                [
+                    'for' => $this->dispatcher->getModuleName() . '-' . $this->getName() . '-list'
+                ]
+            );
         }
 
         public function saveAction()
