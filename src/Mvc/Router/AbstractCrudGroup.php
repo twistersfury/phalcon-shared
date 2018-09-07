@@ -8,14 +8,12 @@
 
     use Phalcon\Mvc\Model;
     use Phalcon\Mvc\Model\CriteriaInterface;
-    use Phalcon\Mvc\Router\Group;
     use Phalcon\Mvc\Router\Route;
-    use Phalcon\Text;
-    use ReflectionClass;
+    use TwistersFury\Phalcon\Shared\Mvc\Router\Group\AbstractGroup;
     use TwistersFury\Phalcon\Shared\Traits\Injectable;
     use TwistersFury\Phalcon\Shared\Exceptions\RecordNotFound;
 
-    abstract class AbstractCrudGroup extends Group
+    abstract class AbstractCrudGroup extends AbstractGroup
     {
         use Injectable;
 
@@ -55,40 +53,9 @@
             return $entity;
         }
 
-        public function getModule(): string
-        {
-            return $this->prepareSegment(
-                $this->explodeClass()[2]
-            );
-        }
-
-        protected function explodeClass(): array
-        {
-            return explode('\\', get_called_class());
-        }
-
         protected function buildCriteria(string $serviceName, array $serviceParams = null): CriteriaInterface
         {
             return $this->getDI()->get('criteriaFactory')->get($serviceName, $serviceParams);
-        }
-
-        /**
-         * @return string
-         * @throws \ReflectionException
-         */
-        public function getController(): string
-        {
-            return $this->prepareSegment(
-                str_replace(
-                    'Group',
-                    '',
-                    (new ReflectionClass(get_called_class()))->getShortName()
-                )
-            );
-        }
-
-        public function getParentController() : ?string {
-            return null;
         }
 
         public function convertParentEntity(int $parentId) : ?Model
@@ -96,37 +63,9 @@
             return null;
         }
 
-        public function hasParent() : bool
-        {
-            return false;
-        }
-
-        protected function buildPrefix() : string
-        {
-            $routePrefix = '/' . $this->getModule() . '/';
-
-            if ($this->hasParent()) {
-                if ($this->getParentController()) {
-                    $routePrefix .= $this->getParentController() . '/';
-                }
-
-                $routePrefix .= '{parentEntity:\d+}/';
-            }
-
-            $routePrefix .= $this->getController();
-
-            return $routePrefix;
-        }
-
         public function initialize()
         {
-            $this->setPrefix($this->buildPrefix())
-                 ->setPaths(
-                     [
-                         'module'     => $this->getModule(),
-                         'controller' => $this->getController()
-                     ]
-                 );
+            parent::initialize();
 
             $this->processRoute(
                 $this->addGet(
@@ -192,6 +131,7 @@
          * @param string                       $routeType
          *
          * @return \TwistersFury\Phalcon\Shared\Router\AbstractCrudGroup
+         * @throws \ReflectionException
          */
         protected function processRoute(Route $route, string $routeType) : AbstractCrudGroup
         {
@@ -204,10 +144,5 @@
             }
 
             return $this;
-        }
-
-        protected function prepareSegment(string $routeSegment): string
-        {
-            return str_replace('_', '-', Text::uncamelize($routeSegment));
         }
     }
