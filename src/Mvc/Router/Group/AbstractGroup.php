@@ -109,7 +109,7 @@ class AbstractGroup extends Group
     protected function _addRoute($pattern, $paths = null, $httpMethods = null): RouteInterface
     {
         /** @var \Phalcon\Mvc\Router\Route $route */
-        $route = parent::add($pattern, $paths, $httpMethods);
+        $route = parent::_addRoute($pattern, $paths, $httpMethods);
 
         if ($this->hasEntity()) {
             $route->convert(
