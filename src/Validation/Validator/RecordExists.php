@@ -43,7 +43,7 @@ class RecordExists extends Validator implements InjectionAwareInterface
                 $this->getDI()->get(
                     Validation\Message::class,
                     [
-                        $this->getOption('message')
+                        $this->getOption('message', $attribute, 'RecordExists')
                     ]
                 )
             );
