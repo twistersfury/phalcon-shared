@@ -24,7 +24,17 @@
             return [];
         }
 
-        public function convertEntity(int $entityId, string $entityType = null, array $entityParams = null): ?Model
+        protected function getDefaultParentType(): string
+        {
+            return '';
+        }
+
+        protected function getDefaultParentParams(): array
+        {
+            return [];
+        }
+
+        public function convertEntity($entityId, string $entityType = null, array $entityParams = null): ?Model
         {
             if ($entityId === 0) {
                 return null;
@@ -53,14 +63,18 @@
             return $entity;
         }
 
+        public function convertParentEntity($parentEntity): ?Model
+        {
+            return $this->convertEntity(
+                $parentEntity,
+                $this->getDefaultParentType(),
+                $this->getDefaultParentParams()
+            );
+        }
+
         protected function buildCriteria(string $serviceName, array $serviceParams = null): CriteriaInterface
         {
             return $this->getDI()->get('criteriaFactory')->get($serviceName, $serviceParams);
-        }
-
-        public function convertParentEntity(int $parentId) : ?Model
-        {
-            return null;
         }
 
         public function initialize()
