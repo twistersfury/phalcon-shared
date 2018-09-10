@@ -24,9 +24,10 @@ class RecordExists extends Validator implements InjectionAwareInterface
 
         $options = array_merge(
             [
-                'field'   => 'id',
-                'service' => false,
-                'message' => 'The requested record does not exist.'
+                'field'     => 'id',
+                'service'   => false,
+                'message'   => null,
+                'hasRecord' => true
             ],
             $options
         );
@@ -36,14 +37,22 @@ class RecordExists extends Validator implements InjectionAwareInterface
 
     public function validate(Validation $validation, $attribute)
     {
-        $fieldValue = $validation->getValue($attribute);
+        $fieldValue  = $validation->getValue($attribute);
+        $needsRecord = $this->getOption('hasRecord');
+        $hasRecord   = $this->buildCriteria($fieldValue)->execute()->getFirst() !== false;
 
-        if (!$this->buildCriteria($fieldValue)->execute()->getFirst()) {
+        if ($needsRecord !== $hasRecord) {
+            $message = $this->getOption('message') ?? (
+                $needsRecord ? 'The request record does not exist.' : 'The requested record already exists.'
+            );
+
             $validation->appendMessage(
                 $this->getDI()->get(
                     Validation\Message::class,
                     [
-                        $this->getOption('message', $attribute, 'RecordExists')
+                        $message,
+                        $attribute,
+                        'RecordExists'
                     ]
                 )
             );
