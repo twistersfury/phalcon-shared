@@ -96,12 +96,12 @@ class AbstractGroup extends Group
         return str_replace('_', '-', Text::uncamelize($routeSegment));
     }
 
-    protected function convertEntity($entityId)
+    public function convertEntity($entityId)
     {
         return $entityId;
     }
 
-    protected function convertParentEntity($parentEntity)
+    public function convertParentEntity($parentEntity)
     {
         return $parentEntity;
     }
