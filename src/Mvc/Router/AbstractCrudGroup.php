@@ -137,12 +137,13 @@
         {
             $route->setName(
                 $this->getModule() . '-' . $this->getController() . '-' . $routeType
-            )->convert('entity', [$this, 'convertEntity']);
-
-            if ($this->hasParent()) {
-                $route->convert('parentEntity', [$this, 'convertParentEntity']);
-            }
+            );
 
             return $this;
+        }
+
+        protected function hasEntity(): bool
+        {
+            return true;
         }
     }

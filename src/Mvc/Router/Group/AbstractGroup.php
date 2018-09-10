@@ -9,6 +9,7 @@
 namespace TwistersFury\Phalcon\Shared\Mvc\Router\Group;
 
 use Phalcon\Mvc\Router\Group;
+use Phalcon\Mvc\Router\RouteInterface;
 use Phalcon\Text;
 
 class AbstractGroup extends Group
@@ -28,6 +29,11 @@ class AbstractGroup extends Group
     }
 
     protected function hasParent() : bool
+    {
+        return false;
+    }
+
+    protected function hasEntity(): bool
     {
         return false;
     }
@@ -88,5 +94,43 @@ class AbstractGroup extends Group
     protected function prepareSegment(string $routeSegment): string
     {
         return str_replace('_', '-', Text::uncamelize($routeSegment));
+    }
+
+    protected function convertEntity($entityId)
+    {
+        return $entityId;
+    }
+
+    protected function convertParentEntity($parentEntity)
+    {
+        return $parentEntity;
+    }
+
+    protected function _addRoute($pattern, $paths = null, $httpMethods = null): RouteInterface
+    {
+        /** @var \Phalcon\Mvc\Router\Route $route */
+        $route = parent::add($pattern, $paths, $httpMethods);
+
+        if ($this->hasEntity()) {
+            $route->convert(
+                'entity',
+                [
+                    $this,
+                    'convertEntity'
+                ]
+            );
+        }
+
+        if ($this->hasParent()) {
+            $route->convert(
+                'parentEntity',
+                [
+                    $this,
+                    'convertParentEntity'
+                ]
+            );
+        }
+
+        return $route;
     }
 }
