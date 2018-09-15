@@ -6,7 +6,6 @@
 
 namespace TwistersFury\Phalcon\Shared\Di\ServiceProvider\Logging;
 
-use Monolog\Logger;
 use Phalcon\DiInterface;
 use TwistersFury\Phalcon\Shared\Di\ServiceProvider\AbstractServiceProvider;
 use Rollbar\Monolog\Handler\RollbarHandler;
