@@ -33,5 +33,8 @@
     "mikey179/vfsStream": "v1.6.4",
     "phalcon/incubator": "3.2.x-dev",
     "vlucas/phpdotenv": "^2.4"
+  },
+  "suggest": {
+    "rollbar/rollbar" : "Required for the RollBar Service Provider"
   }
 }

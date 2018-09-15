@@ -102,8 +102,8 @@ class Logging extends AbstractServiceProvider
                         $this->get(
                             $handler,
                             [
-                                $logger,
                                 $handlerLevel,
+                                $logger,
                                 $debugLevel
                             ]
                         )
