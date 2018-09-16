@@ -11,7 +11,7 @@
 
 namespace TwistersFury\Phalcon\Shared\Di\ServiceProvider;
 
-use Phalcon\Db\Adapter\Factory;
+use Phalcon\Db\Adapter\Pdo\Factory;
 use Phalcon\Db\AdapterInterface;
 
 class Database extends AbstractServiceProvider
