@@ -36,7 +36,7 @@
 
         public function convertEntity($entityId, string $entityType = null, array $entityParams = null): ?Model
         {
-            if ($entityId === 0) {
+            if ($entityId === 0 || $entityId === '0') {
                 return null;
             }
 
