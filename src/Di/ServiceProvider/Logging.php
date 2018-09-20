@@ -89,7 +89,7 @@ class Logging extends AbstractServiceProvider
             );
 
             //Include Any Primary Handlers (IE: RollBar)
-            if (!$this->get('config')->debug && $servicesConfig->logging->handlers) {
+            if (!$this->get('config')->debug && $servicesConfig->logging->get('handlers')) {
                 foreach ($servicesConfig->logging->handlers as $handler => $handlerLevel) {
                     if (is_numeric($handler)) {
                         $handler      = $handlerLevel;
