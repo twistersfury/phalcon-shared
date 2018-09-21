@@ -24,10 +24,11 @@ class RecordExists extends Validator implements InjectionAwareInterface
 
         $options = array_merge(
             [
-                'field'     => 'id',
-                'service'   => false,
-                'message'   => null,
-                'hasRecord' => true
+                'field'       => 'id',
+                'ignoreValue' => null,
+                'service'     => false,
+                'message'     => null,
+                'hasRecord'   => true
             ],
             $options
         );
@@ -71,12 +72,20 @@ class RecordExists extends Validator implements InjectionAwareInterface
             throw new \RuntimeException('Field Not Specified');
         }
 
+        $argValues =  [
+            'fieldValue'  => $fieldValue
+        ];
+
+        $ignoreValue = '';
+        if ($this->getOption('ignoreValue')) {
+            $ignoreValue = ' AND ' . $this->getOption('field') . ' != :ignoreValue:';
+            $argValues['ignoreValue'] = $this->getOption('ignoreValue');
+        }
+
         return $this->getDI()->get('criteriaFactory')->get($this->getOption('service'))
             ->andWhere(
-                $this->getOption('field') . ' = :fieldValue:',
-                [
-                    'fieldValue' => $fieldValue
-                ]
+                $this->getOption('field') . ' = :fieldValue:' . $ignoreValue,
+                $argValues
             );
     }
 }
