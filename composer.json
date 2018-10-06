@@ -17,11 +17,6 @@
       "email": "info@twistersfury.com"
     }
   ],
-  "autoload" : {
-    "files" : [
-      "src/phalcon_bootstrap.php"
-    ]
-  },
   "require" : {
     "php": "^7.1",
     "ext-phalcon": "^3.4.0",
