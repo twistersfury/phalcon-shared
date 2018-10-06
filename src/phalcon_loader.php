@@ -18,7 +18,9 @@ define('TF_LOADER_INITIALIZED', true);
 (function () {
     $isComposer    = strstr(__DIR__, 'vendor') !== false;
     $projectFolder = realpath($isComposer ? __DIR__ . '/../../../../app' : __DIR__ . '/..');
-    $filesList     = [];
+    $filesList     = [
+        realpath($projectFolder . '/../vendor/autoload.php')
+    ];
 
     //Only Add Composer If Not In Composer
     if (!$isComposer) {
@@ -28,7 +30,7 @@ define('TF_LOADER_INITIALIZED', true);
     // Load All Non-Standard Configuration Files (IE: INI Changes, Defines, Etc).
     array_map(
         function ($fileName) use (&$filesList, $isComposer, $projectFolder) {
-            if (!$isComposer) {
+            if ($isComposer) {
                 //Local Copy
                 $filePath = $projectFolder . '/app/config/local/' . $fileName . '.php';
                 if (file_exists($filePath)) {
