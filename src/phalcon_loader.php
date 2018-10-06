@@ -27,13 +27,13 @@ define('TF_LOADER_INITIALIZED', true);
         function ($fileName) use (&$filesList, $isComposer, $projectFolder) {
             if ($isComposer) {
                 //Local Copy
-                $filePath = $projectFolder . '/app/config/local/' . $fileName . '.php';
+                $filePath = $projectFolder . '/config/local/' . $fileName . '.php';
                 if (file_exists($filePath)) {
                     $filesList[] = $filePath;
                 }
 
                 //Dist Copy
-                $filePath = $projectFolder . '/app/config/dist/' . $fileName . '.php';
+                $filePath = $projectFolder . '/config/dist/' . $fileName . '.php';
                 if (file_exists($filePath)) {
                     $filesList[] = $filePath;
                 }
@@ -83,7 +83,7 @@ define('TF_LOADER_INITIALIZED', true);
     $phalconLoader->registerNamespaces(
         $loaderNamespaces
     )->registerDirs(TF_LOADER_DIRECTORIES)
-     ->registerClasses(TF_LOADER_CLASSES);
+                  ->registerClasses(TF_LOADER_CLASSES);
 
     if (file_exists(__DIR__ . '/../config/shim.php')) {
         require_once __DIR__ . '/../config/shim.php';
