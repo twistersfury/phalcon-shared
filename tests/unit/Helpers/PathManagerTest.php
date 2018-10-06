@@ -65,7 +65,7 @@ class PathManagerTest extends UnitTestCase
 
     public function testPastManagerConstruct()
     {
-        require_once TF_SHARED_TESTS . '../../_data/Helpers/DummyPathManager.php';
+        require_once TF_SHARED_TESTS . '/_data/Helpers/DummyPathManager.php';
 
         $testSubject = new DummyPathManager();
         $this->assertTrue($testSubject->wasCalled);

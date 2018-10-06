@@ -17,7 +17,7 @@
          * @param string $fileName File To Test
          */
         public function testUnitTestExists(SplFileInfo $fileName) {
-            $filePath = str_replace(TF_SHARED_SOURCE, TF_SHARED_TESTS, $fileName->getRealPath());
+            $filePath = str_replace(TF_SHARED_SOURCE, TF_SHARED_TESTS . '/unit', $fileName->getRealPath());
             $filePath = str_replace('.php', 'Test.php', $filePath);
 
             $this->assertFileExists($filePath);
