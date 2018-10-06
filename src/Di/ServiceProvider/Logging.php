@@ -16,9 +16,9 @@ use Monolog\Logger;
 
 class Logging extends AbstractServiceProvider
 {
-    protected function registerLogger() : self
+    protected function registerEmailHandler()
     {
-        $this->setShared('logger', function () {
+        $this->set('emailHandler', function () {
             /** @var \Phalcon\Config $servicesConfig */
             $servicesConfig = $this->get('config')->services;
 
@@ -50,13 +50,23 @@ class Logging extends AbstractServiceProvider
                 ]
             );
 
-            $debugLevel = $servicesConfig->logging->env_levels->get(
-                $this->get('config')->environment
-            ) ?: $servicesConfig->logging->env_levels->get('default');
-
             $emailHandler->setFormatter(
                 $this->get(HtmlFormatter::class)
             );
+
+            return $emailHandler;
+        });
+    }
+
+    protected function registerLogger() : self
+    {
+        $this->setShared('logger', function () {
+            /** @var \Phalcon\Config $servicesConfig */
+            $servicesConfig = $this->get('config')->services;
+
+            $debugLevel = $servicesConfig->logging->env_levels->get(
+                $this->get('config')->environment
+            ) ?: $servicesConfig->logging->env_levels->get('default');
 
             /** @var Logger $logger */
             $logger = $this->get(
@@ -81,7 +91,7 @@ class Logging extends AbstractServiceProvider
                     $this->get(
                         'bufferHandler',
                         [
-                            $emailHandler
+                            $this->get('emailHandler')
                         ]
                     ),
                     $debugLevel
