@@ -22,11 +22,6 @@ define('TF_LOADER_INITIALIZED', true);
         realpath($projectFolder . '/../vendor/autoload.php')
     ];
 
-    //Only Add Composer If Not In Composer
-    if (!$isComposer) {
-        $filesList[] = $projectFolder . '/vendor/autoload.php';
-    }
-
     // Load All Non-Standard Configuration Files (IE: INI Changes, Defines, Etc).
     array_map(
         function ($fileName) use (&$filesList, $isComposer, $projectFolder) {
