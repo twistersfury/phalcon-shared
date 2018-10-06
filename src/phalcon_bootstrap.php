@@ -1,60 +1,106 @@
 <?php
-    /**
-     * PHP7 Phalcon Core Library
-     *
-     * @author Phoenix <phoenix@twistersfury.com>
-     * @license http://www.opensource.org/licenses/mit-license.html MIT License
-     * @copyright 2016 Twister's Fury
-     */
+/**
+ * Copyright (C) 2018 Twister's Fury.
+ * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+ */
 
-    namespace TwistersFury\Phalcon\Shared;
+namespace Phalcon\Bootstrap;
 
-    use Phalcon\Di;
-    use Phalcon\Di\FactoryDefault;
-    use Phalcon\Events\Event;
-    use Phalcon\Loader;
-    use TwistersFury\Phalcon\Shared\Helpers\Defines;
+use Phalcon\Debug;
+use Phalcon\Di;
+use Phalcon\Di\FactoryDefault;
+use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Config;
+use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Logging;
 
-    //Let Phalcon Handle Auto-Loading
-    (new Loader())->registerNamespaces(
+//Run in closure to not populate Global Namespace
+(function () {
+    $systemDi = Di::getDefault() ?: new FactoryDefault();
+
+    Di::setDefault($systemDi); //JIC: I've seen instances where the internal call doesn't work.
+
+    //Always Register The Config and Logger Service Providers
+    $systemDi->register(
+        $systemDi->get(Config::class)
+    );
+
+    $systemDi->register(
+        $systemDi->get(Logging::class)
+    );
+
+    //Load Other Providers From Config
+    array_map(
+        function ($configName) use ($systemDi) {
+            foreach ($systemDi->get('config')->get($configName) ?? [] as $providerClass) {
+                $systemDi->register(
+                    $systemDi->get($providerClass)
+                );
+            }
+        },
         [
-            'TwistersFury\Phalcon\Shared' => __DIR__
+            'providers',
+            TF_PROVIDERS_TYPE . '_providers'
         ]
-    )->register(true);
+    );
 
-    require_once __DIR__ . '/../shim.php';
+    //Load Services From Config
+    array_map(
+        function ($configName) use ($systemDi) {
+            foreach ($systemDi->get('config')->get($configName) ?? [] as $service => $serviceOptions) {
+                if (!$serviceOptions instanceof \Phalcon\Config) {
+                    $serviceOptions = [
+                        'service' => $serviceOptions
+                    ];
+                } else {
+                    $serviceOptions = $serviceOptions->toArray();
+                }
 
+                $serviceOptions = array_merge([
+                    'service' => null,
+                    'shared'  => false
+                ], $serviceOptions);
 
-    if (!Di::getDefault()) {
-        Di::setDefault((new FactoryDefault()));
+                $systemDi->set($service, $serviceOptions['service'], $serviceOptions['shared']);
+            }
+        },
+        [
+            'di_services',
+            TF_PROVIDERS_TYPE . '_di_services'
+        ]
+    );
+
+    //Register Events From Config
+    array_map(
+        function ($configName) use ($systemDi) {
+            /** @var \Phalcon\Events\Manager $eventsManager */
+            $eventsManager = $systemDi->get('eventsManager');
+            foreach ($systemDi->get('config')->get($configName) ?? [] as $eventName => $eventCallback) {
+                $eventsManager->attach($eventName, $eventCallback);
+            }
+        },
+        [
+            'events',
+            TF_PROVIDERS_TYPE . '_events'
+        ]
+    );
+
+    //Register Default Route Details
+    if ($systemDi instanceof FactoryDefault) {
+        $systemDi->getShared('router')->add('/', [
+            'action'     => $systemDi->get('config')->system->defaultRoute->action ?? 'index',
+            'controller' => $systemDi->get('config')->system->defaultRoute->controller ?? 'controller',
+            'module'     => $systemDi->get('config')->system->defaultRoute->module ?? 'module'
+        ]);
     }
 
-    (function() {
-        /** @var \Phalcon\Events\Manager $eventsManager */
-        $eventsManager = Di::getDefault()->get('eventsManager');
+    $systemDi->get('logger')->info('Bootstrap Complete');
 
-        $eventsManager->attach('twistersfury:static-defines', function(Event $event, Defines $definesHelper) {
-            $definesHelper->define('TF_DEBUG_MODE_DISABLED', 0)
-                ->define('TF_DEBUG_MODE_TESTING' , 1);
-        });
+    //If Debug Mode Enabled, Then Enable Phalcon Debug Listener
+    if ($systemDi->get('config')->debug && TF_DEBUG & TF_DEBUG_PHALCON) {
+        $systemDi->get('logger')->debug('Phalcon Debug Enabled');
 
-        $eventsManager->attach('twistersfury:dynamic-defines', function(Event $event, Defines $definesHelper) {
-            $definesHelper->define(
-                'TF_SHARED_SOURCE',
-                __DIR__
-            )->define(
-                'TF_SHARED_PROJECT',
-                realpath(__DIR__ . '/..')
-            )->define(
-                'TF_SHARED_TESTS',
-                realpath(__DIR__ . '/../tests/unit')
-            )->define('TF_APP_ROOT', function() {
-                $isComposer = strstr(__DIR__, 'vendor') !== false;
-
-                return $isComposer ? __DIR__ . '/../../../../app' : __DIR__ . '/..';
-            })->define('TF_DEBUG_MODE', getenv('TF_DEBUG_MODE') ?: TF_DEBUG_MODE_DISABLED);
-        }, -1000); //Setting Priority Low So This Runs Last
-
-        $eventsManager->fire('twistersfury:static-defines', Di::getDefault()->get(Defines::class));
-        $eventsManager->fire('twistersfury:dynamic-defines', Di::getDefault()->get(Defines::class));
-    })();
+        $systemDi->get(Debug::class)->listen(true, false);
+    } else {
+        //Otherwise Just Enable The Monolog Error Handler
+        \Monolog\ErrorHandler::register($systemDi->get('logger'));
+    }
+})();
