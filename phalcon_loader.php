@@ -17,7 +17,7 @@ define('TF_LOADER_INITIALIZED', true);
 //Closure To Prevent Populating Global Namespace
 (function () {
     $isComposer    = strstr(__DIR__, 'vendor') !== false;
-    $projectFolder = realpath($isComposer ? __DIR__ . '/../../../../app' : __DIR__ . '/..');
+    $projectFolder = realpath($isComposer ? __DIR__ . '/../../../app' : __DIR__);
     $filesList     = [
         realpath($projectFolder . '/../vendor/autoload.php')
     ];
