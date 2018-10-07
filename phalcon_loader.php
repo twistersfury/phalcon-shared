@@ -40,7 +40,7 @@ define('TF_LOADER_INITIALIZED', true);
             }
 
             //Shared Copy
-            $filePath = __DIR__ . '/../config/' . $fileName . '.php';
+            $filePath = __DIR__ . '/config/' . $fileName . '.php';
             if (file_exists($filePath)) {
                 $filesList[] = $filePath;
             }
@@ -85,8 +85,8 @@ define('TF_LOADER_INITIALIZED', true);
     )->registerDirs(TF_LOADER_DIRECTORIES)
                   ->registerClasses(TF_LOADER_CLASSES);
 
-    if (file_exists(__DIR__ . '/../config/shim.php')) {
-        require_once __DIR__ . '/../config/shim.php';
+    if (file_exists(__DIR__ . '/config/shim.php')) {
+        require_once __DIR__ . '/config/shim.php';
     }
 
     if ($isComposer && file_exists($projectFolder . '/app/config/dist/shim.php')) {
