@@ -10,8 +10,8 @@ use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Application;
 
-//JIC It Isn't In The Web Server Config
-$_SERVER['DOCUMENT_ROOT'] = $_SERVER['DOCUMENT_ROOT'] ?: realpath(__DIR__ . '/../public');
+//JIC It Isn't In The Web Server Config - Only Used In Actual Project So We Don't Care If Path Is Wrong For Local
+$_SERVER['DOCUMENT_ROOT'] = $_SERVER['DOCUMENT_ROOT'] ?: realpath(__DIR__ . '/../../../public');
 
 require_once __DIR__ . '/phalcon_loader.php';
 
