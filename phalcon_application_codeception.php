@@ -7,4 +7,4 @@
 
 \Phalcon\Di::reset();
 
-return __DIR__ . '/phalcon_application.php';
+return require __DIR__ . '/phalcon_application.php';
