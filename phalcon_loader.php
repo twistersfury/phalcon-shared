@@ -75,7 +75,7 @@ define('TF_LOADER_INITIALIZED', true);
 
     $loaderNamespaces = array_merge(
         [
-            'TwistersFury\Phalcon\Shared' => __DIR__
+            'TwistersFury\Phalcon\Shared' => __DIR__ . '/src'
         ],
         TF_LOADER_NAMESPACES
     );
