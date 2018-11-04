@@ -89,7 +89,7 @@ define('TF_LOADER_INITIALIZED', true);
         require_once __DIR__ . '/config/shim.php';
     }
 
-    if ($isComposer && file_exists($projectFolder . '/app/config/dist/shim.php')) {
-        require_once $projectFolder . '/app/config/dist/shim.php';
+    if ($isComposer && file_exists($projectFolder . '/config/dist/shim.php')) {
+        require_once $projectFolder . '/config/dist/shim.php';
     }
 })();

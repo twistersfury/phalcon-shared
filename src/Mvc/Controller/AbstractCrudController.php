@@ -7,7 +7,6 @@
     namespace TwistersFury\Phalcon\Shared\Mvc\Controller;
 
     use Phalcon\Forms\Form;
-    use Phalcon\Mvc\Controller;
     use Phalcon\Mvc\Model\CriteriaInterface;
     use TwistersFury\Phalcon\Shared\Interfaces\EntityInterface;
 
