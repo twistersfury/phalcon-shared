@@ -6,6 +6,7 @@
 
 namespace Phalcon\Bootstrap;
 
+use Monolog\ErrorHandler;
 use Phalcon\Debug;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
@@ -99,8 +100,19 @@ use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Logging;
         $systemDi->get('logger')->debug('Phalcon Debug Enabled');
 
         $systemDi->get(Debug::class)->listen(true, false);
+
+        $errorHandler = $systemDi->get(
+            ErrorHandler::class,
+            [$systemDi->get('logger')]
+        );
     } else {
         //Otherwise Just Enable The Monolog Error Handler
-        \Monolog\ErrorHandler::register($systemDi->get('logger'));
+        $errorHandler = ErrorHandler::register($systemDi->get('logger'));
     }
+
+    //Register Instance To Di For Access Later
+    $systemDi->set(
+        ErrorHandler::class,
+        $errorHandler
+    );
 })();
