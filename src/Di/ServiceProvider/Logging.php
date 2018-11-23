@@ -68,6 +68,8 @@ class Logging extends AbstractServiceProvider
                 $this->get(Handler::class, [$logger]);
             }
         );
+
+        return $this;
     }
 
     protected function registerLogger() : self
