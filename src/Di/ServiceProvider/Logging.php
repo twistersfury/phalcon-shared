@@ -13,6 +13,7 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SwiftMailerHandler;
 use Monolog\Logger;
+use TwistersFury\Phalcon\Shared\Exceptions\Handler;
 
 class Logging extends AbstractServiceProvider
 {
@@ -56,6 +57,17 @@ class Logging extends AbstractServiceProvider
 
             return $emailHandler;
         });
+    }
+
+    protected function registerHandler(): self
+    {
+        $this->setShared(
+            Handler::class,
+            function (Logger $logger = null) {
+                $logger = $logger ?? $this->get('logger');
+                $this->get(Handler::class, [$logger]);
+            }
+        );
     }
 
     protected function registerLogger() : self
