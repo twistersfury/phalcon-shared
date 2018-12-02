@@ -33,6 +33,6 @@ abstract class AbstractModule implements ModuleDefinitionInterface
 
     protected function getDefaultControllerNamespace(): string
     {
-        return 'Controllers';
+        return 'Controller';
     }
 }

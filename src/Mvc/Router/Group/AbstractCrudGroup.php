@@ -4,12 +4,11 @@
  * Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
  */
 
-    namespace TwistersFury\Phalcon\Shared\Mvc\Router;
+    namespace TwistersFury\Phalcon\Shared\Mvc\Router\Group;
 
     use Phalcon\Mvc\Model;
     use Phalcon\Mvc\Model\CriteriaInterface;
     use Phalcon\Mvc\Router\Route;
-    use TwistersFury\Phalcon\Shared\Mvc\Router\Group\AbstractGroup;
     use TwistersFury\Phalcon\Shared\Traits\Injectable;
     use TwistersFury\Phalcon\Shared\Exceptions\RecordNotFound;
 
