@@ -19,8 +19,6 @@ abstract class AbstractModule implements ModuleDefinitionInterface
     {
         $dispatcher = $dependencyInjector->getShared('dispatcher');
 
-
-
         $dispatcher->setModuleName($this->getModuleName());
         $dispatcher->setDefaultNameSpace(
             str_replace(
@@ -46,20 +44,21 @@ abstract class AbstractModule implements ModuleDefinitionInterface
     {
         $className = explode('\\', get_called_class());
 
-        $totalItems = count($className) - 1;
+        $totalItems = count($className) - 1; //Don't Include Last Item
+        $moduleName = null;
 
         for ($currentPos = 2; $currentPos < $totalItems; $currentPos++) {
-            $moduleName = $className[$currentPos];
             if ($className[$currentPos + 1] === 'Mvc') {
+                $moduleName = $className[$currentPos];
                 break;
             }
         }
 
-        if (!isset($moduleName)) {
+        if (!$moduleName) {
             throw new \LogicException('Module Name Could Not Be Determined');
         }
 
 
-        return str_replace('_', '-', Text::uncamelize($className[2]));
+        return str_replace('_', '-', Text::uncamelize($moduleName));
     }
 }

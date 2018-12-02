@@ -31,5 +31,11 @@
   },
   "suggest": {
     "rollbar/rollbar" : "Required for the RollBar Service Provider"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TwistersFury\\Phalcon\\Shared\\Tests\\Mocks\\" : "tests/_support/Mocks/",
+      "TwistersFury\\Phalcon\\Shared\\Tests\\Unit\\" : "tests/unit/"
+    }
   }
 }

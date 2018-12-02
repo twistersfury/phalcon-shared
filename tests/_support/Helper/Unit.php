@@ -6,5 +6,8 @@ namespace Helper;
 
 class Unit extends \Codeception\Module
 {
-
+    public function getPhalcon()
+    {
+        return $this->getModule('Phalcon');
+    }
 }

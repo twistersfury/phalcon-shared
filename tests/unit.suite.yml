@@ -1,4 +1,4 @@
-actor: Tester
+actor: UnitTester
 modules:
     enabled:
         - Asserts
