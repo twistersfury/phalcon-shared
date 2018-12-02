@@ -19,9 +19,9 @@ abstract class AbstractModule implements ModuleDefinitionInterface
     {
         $dispatcher = $dependencyInjector->getShared('dispatcher');
 
-        $className = explode('\\', get_called_class());
 
-        $dispatcher->setModuleName(str_replace('_', '-', Text::uncamelize($className[2])));
+
+        $dispatcher->setModuleName($this->getModuleName());
         $dispatcher->setDefaultNameSpace(
             str_replace(
                 'Module',
@@ -34,5 +34,32 @@ abstract class AbstractModule implements ModuleDefinitionInterface
     protected function getDefaultControllerNamespace(): string
     {
         return 'Controller';
+    }
+
+    /**
+     * Retrieves Module Name. Assumes layer above Mvc in namespace.
+     *
+     * @return string
+     * @throws \LogicException
+     */
+    protected function getModuleName(): string
+    {
+        $className = explode('\\', get_called_class());
+
+        $totalItems = count($className) - 1;
+
+        for ($currentPos = 2; $currentPos < $totalItems; $currentPos++) {
+            $moduleName = $className[$currentPos];
+            if ($className[$currentPos + 1] === 'Mvc') {
+                break;
+            }
+        }
+
+        if (!isset($moduleName)) {
+            throw new \LogicException('Module Name Could Not Be Determined');
+        }
+
+
+        return str_replace('_', '-', Text::uncamelize($className[2]));
     }
 }
