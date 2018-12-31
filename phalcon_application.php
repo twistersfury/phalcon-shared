@@ -18,10 +18,10 @@ require_once __DIR__ . '/phalcon_loader.php';
 //Do not run the bootstrap if unit tests are running. This ensures that the unit tests are running in as isolated
 // as a state as possible.
 if (!($_ENV['ENV_RUNNING_UNIT_TESTS'] ?? false)) {
-    require __DIR__ . '/phalcon_bootstrap.php';
+    require_once __DIR__ . '/phalcon_bootstrap.php';
 
     //Add Special Service To Register Modules For Application
-    Di::getDefault()->set(
+    Di::getDefault()->attempt(
         Application::class,
         function (Di $diInstance) {
             $phApplication = new Application($diInstance);

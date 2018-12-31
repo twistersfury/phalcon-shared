@@ -5,6 +5,6 @@
  * The getDefault allowed override causes issues when running codeception.
  */
 
-\Phalcon\Di::reset();
+//\Phalcon\Di::reset();
 
 return require __DIR__ . '/phalcon_application.php';
