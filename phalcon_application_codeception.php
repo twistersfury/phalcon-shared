@@ -5,6 +5,6 @@
  * The getDefault allowed override causes issues when running codeception.
  */
 
-//\Phalcon\Di::reset();
+$_ENV['ENV_RUNNING_CODECEPTION'] = time();
 
 return require __DIR__ . '/phalcon_application.php';

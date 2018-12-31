@@ -14,10 +14,14 @@ use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Config;
 use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Logging;
 
 //Run in closure to not populate Global Namespace
-(function () {
-    $systemDi = Di::getDefault() ?: new FactoryDefault();
+return (function (): Di
+{
+    $systemDi = null;
+    if ($_ENV['ENV_RUNNING_CODECEPTION'] ?? false || !Di::getDefault()) {
+        $systemDi = new FactoryDefault();
+    }
 
-    Di::setDefault($systemDi); //JIC: I've seen instances where the internal call doesn't work.
+    $systemDi = $systemDi ?? Di::getDefault();
 
     //Always Register The Config and Logger Service Providers
     $systemDi->register(
@@ -115,4 +119,6 @@ use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Logging;
         ErrorHandler::class,
         $errorHandler
     );
+
+    return $systemDi;
 })();

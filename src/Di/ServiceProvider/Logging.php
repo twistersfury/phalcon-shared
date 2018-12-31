@@ -100,17 +100,22 @@ class Logging extends AbstractServiceProvider
                         $debugLevel
                     ]
                 )
-            )->pushHandler(
-                new FingersCrossedHandler(
-                    $this->get(
-                        'bufferHandler',
-                        [
-                            $this->get('emailHandler')
-                        ]
-                    ),
-                    $debugLevel
-                )
             );
+
+
+            if ($servicesConfig->logging->get('email')) {
+                $logger->pushHandler(
+                    new FingersCrossedHandler(
+                        $this->get(
+                            'bufferHandler',
+                            [
+                                $this->get('emailHandler')
+                            ]
+                        ),
+                        $debugLevel
+                    )
+                );
+            }
 
             //Include Any Primary Handlers (IE: RollBar)
             if (!$this->get('config')->debug && $servicesConfig->logging->get('handlers')) {
