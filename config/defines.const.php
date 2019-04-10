@@ -7,6 +7,8 @@
 
 namespace TwistersFury\Defines;
 
+define('TF_COMPOSER_DEVELOPMENT', false);
+
 define(
     'TF_LOADER_NAMESPACES',
     []

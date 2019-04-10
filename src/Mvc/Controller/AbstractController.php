@@ -6,6 +6,7 @@
 
 namespace TwistersFury\Phalcon\Shared\Mvc\Controller;
 
+use Phalcon\Config;
 use Phalcon\Mvc\Controller;
 
 /**
@@ -17,17 +18,12 @@ abstract class AbstractController extends Controller
     {
         $this->assets->useImplicitOutput(false);
 
-        $this->assets->collection($this->config->system->theme . '-internal')
-            ->setSourcePath(APPLICATION_PATH . '/themes/' . $this->config->system->theme)
-            ->setLocal(true)
-            ->setPrefix('assets/' . $this->config->system->theme . '/');
-
-        $this->assets->collection($this->config->system->theme . '-external')
-            ->setLocal(false);
+        $this->configureCollection($this->config->system->theme);
 
         $this->configureTitle()
             ->configureJavascript()
-            ->configureStylesheets();
+            ->configureStylesheets()
+            ->configureCollections();
     }
 
     protected function getStylesheetFiles() : array
@@ -53,29 +49,67 @@ abstract class AbstractController extends Controller
         return $this;
     }
 
-    private function configureJavascript() : self
+    private function configureCollections(): self
     {
-        foreach ($this->getJavascriptFiles() as $javascriptFile) {
-            if (!preg_match('#https?://(.*?)#', $javascriptFile)) {
-                $this->assets->collection($this->config->system->theme . '-internal')->addJs('js/' . $javascriptFile);
+        foreach($this->getDi()->get('themeConfig')->getCollections() as $collectionName => $collection) {
+            $this->configureCollection($collectionName, $collection);
+        }
+
+        return $this;
+    }
+
+    private function configureCollection(string $collectionName, Config $collection = null): self
+    {
+        $name = $collection->name ?? $collectionName;
+
+        $this->assets->collection($name . '-internal')
+                     ->setSourcePath(APPLICATION_PATH . '/themes/' . $this->config->system->theme)
+                     ->setLocal(true)
+                     ->setPrefix('assets/' . $this->config->system->theme . '/');
+
+        $this->assets->collection($name . '-external')
+                     ->setLocal(false);
+
+        if ($collection !== null) {
+            $this->configureAssets($name, $this->getDi()->get('themeConfig')->getFiles($collectionName), $collection);
+        }
+
+        return $this;
+    }
+
+    private function configureAssets(string $collectionName, array $assets, Config $collection): self
+    {
+        $basePath = $collection->type;
+        if ($collectionName !== 'default') {
+            $basePath = $collectionName;
+        }
+
+        foreach($assets as $asset) {
+            if (!preg_match('#https?://(.*?)#', $asset)) {
+                $this->assets->collection($collectionName . '-internal')->{'add' . $collection['type']}($basePath . '/' . $asset);
             } else {
-                $this->assets->collection($this->config->system->theme . '-external')->addJs($javascriptFile);
+                $this->assets->collection($collectionName . '-external')->{'add' . $collection['type']}($asset);
             }
         }
 
         return $this;
     }
 
+    private function configureJavascript() : self
+    {
+        return $this->configureAssets(
+            $this->config->system->theme,
+            $this->getJavascriptFiles(),
+            new Config(['type' => 'js'])
+        );
+    }
+
     private function configureStylesheets() : self
     {
-        foreach ($this->getStylesheetFiles() as $cssFile) {
-            if (!preg_match('#https?://(.*?)#', $cssFile)) {
-                $this->assets->collection($this->config->system->theme . '-internal')->addCss('css/' . $cssFile);
-            } else {
-                $this->assets->collection($this->config->system->theme . '-external')->addCss($cssFile);
-            }
-        }
-
-        return $this;
+        return $this->configureAssets(
+            $this->config->system->theme,
+            $this->getStylesheetFiles(),
+            new Config(['type' => 'css'])
+        );
     }
 }

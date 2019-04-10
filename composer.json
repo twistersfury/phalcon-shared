@@ -36,6 +36,9 @@
     "psr-4": {
       "TwistersFury\\Phalcon\\Shared\\Tests\\Mocks\\" : "tests/_support/Mocks/",
       "TwistersFury\\Phalcon\\Shared\\Tests\\Unit\\" : "tests/unit/"
-    }
+    },
+    "files" : [
+      "local_bootstrap.php"
+    ]
   }
 }

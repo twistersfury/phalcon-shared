@@ -47,7 +47,7 @@ class Theme extends Config implements InjectionAwareInterface
         return $this->getFiles('javascript');
     }
 
-    private function getFiles(string $fileType) : array
+    public function getFiles(string $fileType) : array
     {
         if (($fileCache = $this->getDi()->get('serviceCache')->get(
             'themeConfig-' . $this->get('name') . '-' . $fileType
@@ -69,5 +69,14 @@ class Theme extends Config implements InjectionAwareInterface
         );
 
         return $fileCache;
+    }
+
+    public function getCollections(): Config
+    {
+        if (!$this->get('collections')) {
+            $this['collections'] = new static([]);
+        }
+
+        return $this->get('collections');
     }
 }
