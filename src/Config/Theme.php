@@ -55,7 +55,7 @@ class Theme extends Config implements InjectionAwareInterface
             return $fileCache;
         }
 
-        $fileCache = $this->get($fileType)->toArray();
+        $fileCache = $this->get($fileType, new self())->toArray();
         $config    = $this;
 
         while ($config->hasParent()) {

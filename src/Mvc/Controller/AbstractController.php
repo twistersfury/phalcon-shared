@@ -18,7 +18,8 @@ abstract class AbstractController extends Controller
     {
         $this->assets->useImplicitOutput(false);
 
-        $this->configureCollection($this->config->system->theme);
+        $this->configureCollection($this->config->system->theme)
+            ->configureCollection($this->config->system->theme . '-module');
 
         $this->configureTitle()
             ->configureJavascript()
@@ -86,7 +87,13 @@ abstract class AbstractController extends Controller
 
         foreach($assets as $asset) {
             if (!preg_match('#https?://(.*?)#', $asset)) {
-                $this->assets->collection($collectionName . '-internal')->{'add' . $collection['type']}($basePath . '/' . $asset);
+                $this->assets->collection($collectionName . '-internal')->{'add' . $collection['type']}(
+                    preg_replace(
+                        '#\/+#',
+                        '/',
+                        $basePath . '/' . $asset
+                    )
+                );
             } else {
                 $this->assets->collection($collectionName . '-external')->{'add' . $collection['type']}($asset);
             }
@@ -97,18 +104,46 @@ abstract class AbstractController extends Controller
 
     private function configureJavascript() : self
     {
-        return $this->configureAssets(
-            $this->config->system->theme,
-            $this->getJavascriptFiles(),
-            new Config(['type' => 'js'])
+        return $this->addJavascript(
+            $this->themeConfig->getFiles('modules-js'),
+            $this->config->system->theme . '-module'
+        )->addJavascript(
+            $this->getJavascriptFiles()
         );
     }
 
     private function configureStylesheets() : self
     {
+        return $this->addCss(
+            $this->themeConfig->getFiles('modules-css'),
+            $this->config->system->theme . '-module'
+        )->addCss(
+            $this->getStylesheetFiles()
+        );
+    }
+
+    protected function addJavascript(array $javascriptFiles, string $collectionName = null): self
+    {
+        if ($collectionName === null) {
+            $collectionName = $this->config->system->theme;
+        }
+
         return $this->configureAssets(
-            $this->config->system->theme,
-            $this->getStylesheetFiles(),
+            $collectionName,
+            $javascriptFiles,
+            new Config(['type' => 'js'])
+        );
+    }
+
+    protected function addCss(array $cssFiles, string $collectionName = null): self
+    {
+        if ($collectionName === null) {
+            $collectionName = $this->config->system->theme;
+        }
+
+        return $this->configureAssets(
+            $collectionName,
+            $cssFiles,
             new Config(['type' => 'css'])
         );
     }
