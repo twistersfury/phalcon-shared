@@ -8,6 +8,7 @@ namespace TwistersFury\SignUp\Bootstrap;
 
 use InvalidArgumentException;
 use Phalcon\Cli\Console;
+use Phalcon\Di;
 use Phalcon\Di\FactoryDefault\Cli;
 
 //JIC It Isn't In The Web Server Config - Only Used In Actual Project So We Don't Care If Path Is Wrong For Local
@@ -21,7 +22,9 @@ require_once __DIR__ . '/phalcon_loader.php';
         throw new InvalidArgumentException('Missing Task Name');
     }
 
-    $systemDi = new Cli();
+    Di::setDefault(new Cli());
+
+    $systemDi = require __DIR__ . '/phalcon_bootstrap.php';
 
     /** @var Console $phalconConsole */
     $phalconConsole = $systemDi->get(
