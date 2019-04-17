@@ -11,6 +11,8 @@ use Phalcon\Cli\Console;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault\Cli;
 
+define('TF_PROVIDERS_TYPE', 'cli');
+
 //JIC It Isn't In The Web Server Config - Only Used In Actual Project So We Don't Care If Path Is Wrong For Local
 $_SERVER['DOCUMENT_ROOT'] = ($_SERVER['DOCUMENT_ROOT'] ?? false) ?: realpath(__DIR__ . '/../../../public');
 
@@ -34,11 +36,13 @@ require_once __DIR__ . '/phalcon_loader.php';
         ]
     );
 
+    $phalconConsole->setEventsManager($systemDi->get('eventsManager'));
+
     $systemDi->setShared('console', $phalconConsole);
 
     $phalconConsole->handle([
         'task'   => $_SERVER['argv'][1],
         'action' => $_SERVER['argv'][2] ?? 'main',
-        'params' => $_SERVER['argv'][3] ?? []
+        'params' => [$_SERVER['argv'][3] ?? null]
     ]);
 })();

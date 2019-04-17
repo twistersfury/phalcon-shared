@@ -11,6 +11,7 @@ use Monolog\Handler\BufferHandler;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SwiftMailerHandler;
 use Monolog\Logger;
 use TwistersFury\Phalcon\Shared\Exceptions\Handler;
@@ -102,6 +103,17 @@ class Logging extends AbstractServiceProvider
                 )
             );
 
+            if (TF_PROVIDERS_TYPE === 'cli') {
+                $logger->pushHandler(
+                    $this->get(
+                        StreamHandler::class,
+                        [
+                            STDOUT,
+                            $debugLevel
+                        ]
+                    )
+                );
+            }
 
             if ($servicesConfig->logging->get('email')) {
                 $logger->pushHandler(

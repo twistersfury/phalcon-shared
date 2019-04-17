@@ -10,6 +10,7 @@ use Monolog\ErrorHandler;
 use Phalcon\Debug;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Di\FactoryDefault\Cli;
 use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Config;
 use TwistersFury\Phalcon\Shared\Di\ServiceProvider\Logging;
 
@@ -89,7 +90,7 @@ return (function (): Di
     );
 
     //Register Default Route Details
-    if ($systemDi instanceof FactoryDefault) {
+    if (!$systemDi instanceof Cli) {
         $systemDi->getShared('router')->add('/', [
             'action'     => $systemDi->get('config')->system->defaultRoute->action ?? 'index',
             'controller' => $systemDi->get('config')->system->defaultRoute->controller ?? 'controller',
